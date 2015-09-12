@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+  <name>irobotcreate2</name>
+  <version>0.0.1</version>
+  <description>The irobotcreate2 package</description>
+
+  <maintainer email="mirko.ferrati@gmail.com">mirko</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+</package>
