@@ -176,7 +176,7 @@ namespace irobot
 	typedef enum _OI_Opcode {
 
 		// Command opcodes
-		OI_OPCODE_START = 128,
+		OI_OPCODE_START = 128, //PASSIVE
 		OI_OPCODE_BAUD = 129,
 		OI_OPCODE_CONTROL = 130,
 		OI_OPCODE_SAFE = 131,
@@ -309,6 +309,16 @@ namespace irobot
 		//! Close the serial port
 		int closeSerialPort();
 	
+		// Start the roomba
+		int Start();
+		// Stop the roomba
+		int Stop();
+		// Reset the roomba
+		int Reset();
+		// Set Safe mode for the roomba
+		int Safe();
+		// Set Full mode for the roomba
+		int Full();
 		//! Power down the Roomba.
 		int powerDown();
 	

@@ -160,6 +160,7 @@ int irobot::OpenInterface::closeSerialPort()
 int irobot::OpenInterface::sendOpcode(OI_Opcode code)
 {
 	uint8_t to_send = code;
+	std::cout<<"Sending OPCode: "<<(uint8_t)to_send<<std::endl;
 	try{ serial_port_.write(&to_send, 1); }
 	catch(std::exception& e){
         std::cerr<<e.what()<<std::endl;
@@ -167,6 +168,41 @@ int irobot::OpenInterface::sendOpcode(OI_Opcode code)
 	return(0);
 }
 
+
+// *****************************************************************************
+// Start the roomba
+int irobot::OpenInterface::Start()
+{
+	return sendOpcode(OI_OPCODE_START);
+}
+
+// *****************************************************************************
+// Stop the roomba
+int irobot::OpenInterface::Stop()
+{
+	return sendOpcode(OI_OPCODE_STOP);
+}
+
+// *****************************************************************************
+// Reset the roomba
+int irobot::OpenInterface::Reset()
+{
+	return sendOpcode(OI_OPCODE_RESET);
+}
+
+// *****************************************************************************
+// Set Safe mode for the roomba
+int irobot::OpenInterface::Safe()
+{
+	return sendOpcode(OI_OPCODE_SAFE);
+}
+
+// *****************************************************************************
+// Set Full mode for the roomba
+int irobot::OpenInterface::Full()
+{
+	return sendOpcode(OI_OPCODE_FULL);
+}
 
 // *****************************************************************************
 // Power down the roomba
