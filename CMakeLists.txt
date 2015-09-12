@@ -1,6 +1,19 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(irobotcreate2)
 
+ENABLE_LANGUAGE(CXX)
+
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
+check_cxx_compiler_flag("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
 find_package(catkin REQUIRED COMPONENTS
   roslib
   roscpp
@@ -43,6 +56,10 @@ include_directories(include)
 add_executable(irobotcreate2_lightweight src/irobotcreate2/OpenInterface.cpp src/irobotcreate2_lightweight.cpp)
 add_executable(irobotcreate2 src/irobotcreate2/OpenInterface.cpp src/irobotcreate2.cpp)
 
+add_executable(basic_commands src/irobotcreate2/OpenInterface.cpp src/basic_commands.cpp)
+
 target_link_libraries(irobotcreate2_lightweight ${catkin_LIBRARIES})
 
 target_link_libraries(irobotcreate2 ${catkin_LIBRARIES})
+
+target_link_libraries(basic_commands ${catkin_LIBRARIES})
