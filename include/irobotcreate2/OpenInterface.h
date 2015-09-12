@@ -34,7 +34,8 @@
 *
 * Author: Gonçalo Cabrita on 19/05/2010
 *********************************************************************/
-#include "cereal_port/CerealPort.h"
+
+#include <serial/serial.h>
 
 // Packets sizes
 #define OI_PACKET_GROUP_0_SIZE						26
@@ -162,13 +163,6 @@
 
 #define MAX_PATH 32
 
-
-#ifndef MIN
-#define MIN(a,b) ((a < b) ? (a) : (b))
-#endif
-#ifndef MAX
-#define MAX(a,b) ((a > b) ? (a) : (b))
-#endif
 #ifndef NORMALIZE
 #define NORMALIZE(z) atan2(sin(z), cos(z))
 #endif
@@ -202,7 +196,7 @@ namespace irobot
 		OI_OPCODE_DRIVE_DIRECT = 145,
 		OI_OPCODE_DRIVE_PWM = 146,
 		OI_OPCODE_STREAM = 148,
-		OI_OPCODE_QUERY = 149, //QUERY LIST
+		OI_OPCODE_QUERY = 149, //QUERY_LIST
 		OI_OPCODE_PAUSE_RESUME_STREAM = 150,
 		OI_OPCODE_SCHEDULE_LEDS = 162,
 		OI_OPCODE_DIGIT_LEDS_RAW = 163,
@@ -210,9 +204,8 @@ namespace irobot
 		OI_OPCODE_BUTTONS = 165,
 		OI_OPCODE_SCHEDULE = 167,
 		OI_OPCODE_SET_DAY_TIME = 168,
-		// NEW OPCODES
-		OI_OPCODE_RESET = 7,
-		OI_OPCODE_STOP = 173
+        OI_OPCODE_RESET = 7,
+        OI_OPCODE_STOP = 173
 	} OI_Opcode;
 
 
@@ -290,7 +283,7 @@ namespace irobot
 	/*! \class OpenInterface OpenInterface.h "inc/OpenInterface.h"
 	 *  \brief C++ class implementation of the iRobot OI.
 	 *
-	 * This class implements the iRobot Open Interface protocolor as described by iRobot. Based on the Player Roomba driver writen by Brian Gerkey.
+	 * This class implements the iRobot Open Interface protocolor as described by iRobot. Based on the Roomba500 ROS node.
 	 */
 	class OpenInterface
 	{
@@ -406,7 +399,7 @@ namespace irobot
 		*
 		*  \return 0 if ok, -1 otherwise.
 		*/
-		int brushesPWM(char main_brush, char side_brush, char vacuum);
+		int brushesPWM(uint8_t main_brush, uint8_t side_brush, uint8_t vacuum);
 	
 		//! Set the Roomba in cleaning mode. Returns the OImode to safe.
 		int clean();
@@ -643,8 +636,8 @@ namespace irobot
 	
 		//! Serial port to which the robot is connected
 		std::string port_name_;
-		//! Cereal port object
-		cereal::CerealPort * serial_port_;
+		//! Serial port object
+		serial::Serial serial_port_;
 	
 		//! Stream variable. NOT TESTED
 		bool stream_defined_;

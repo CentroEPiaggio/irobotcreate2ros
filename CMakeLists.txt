@@ -7,6 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  serial
+  tf
 )
 # Generate messages in the 'msg' folder
 add_message_files(
@@ -38,8 +40,8 @@ catkin_package()
 
 include_directories(include)
 
-add_executable(roomba500 src/iRobot/OpenInterface.cpp src/roomba500_lightweight.cpp)
-add_executable(roomba560 src/iRobot/OpenInterface.cpp src/roomba560.cpp)
+add_executable(roomba500 src/irobotcreate2/OpenInterface.cpp src/roomba500_lightweight.cpp)
+add_executable(roomba560 src/irobotcreate2/OpenInterface.cpp src/roomba560.cpp)
 
 target_link_libraries(roomba500 ${catkin_LIBRARIES})
 

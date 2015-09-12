@@ -40,20 +40,18 @@
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>				// odom
 #include <geometry_msgs/Twist.h>			// cmd_vel
-#include <roomba_500_series/Battery.h>		// battery
-#include <roomba_500_series/Bumper.h>		// bumper
-#include <roomba_500_series/Buttons.h>		// buttons
-#include <roomba_500_series/RoombaIR.h>		// ir_bumper cliff
-#include <roomba_500_series/IRCharacter.h>	// ir_character
-#include <roomba_500_series/WheelDrop.h>	// wheel_drop
-#include <roomba_500_series/Leds.h>			// leds
-#include <roomba_500_series/DigitLeds.h>	// digit_leds
-#include <roomba_500_series/Song.h>			// song
-#include <roomba_500_series/PlaySong.h>		// play_song
+#include <irobotcreate2/Battery.h>		// battery
+#include <irobotcreate2/Bumper.h>		// bumper
+#include <irobotcreate2/Buttons.h>		// buttons
+#include <irobotcreate2/RoombaIR.h>		// ir_bumper cliff
+#include <irobotcreate2/IRCharacter.h>	// ir_character
+#include <irobotcreate2/WheelDrop.h>	// wheel_drop
+#include <irobotcreate2/Leds.h>			// leds
+#include <irobotcreate2/DigitLeds.h>	// digit_leds
+#include <irobotcreate2/Song.h>			// song
+#include <irobotcreate2/PlaySong.h>		// play_song
 
-#include "roomba_500_series/OpenInterface.h"
-
-#include "roomba_500_series/GoDock.h"	// GoDock action
+#include "irobotcreate2/OpenInterface.h"
 
 #include <string>
 
@@ -73,19 +71,19 @@ void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel)
 	roomba->drive(cmd_vel->linear.x, cmd_vel->angular.z);
 }
 
-void ledsReceived(const roomba_500_series::Leds::ConstPtr& leds)
+void ledsReceived(const irobotcreate2::Leds::ConstPtr& leds)
 {
 	roomba->setLeds(leds->warning, leds->dock, leds->spot, leds->dirt_detect, leds->clean_color, leds->clean_intensity);
 }
 
-void digitLedsReceived(const roomba_500_series::DigitLeds::ConstPtr& leds)
+void digitLedsReceived(const irobotcreate2::DigitLeds::ConstPtr& leds)
 {
 	if(leds->digits.size()!=4) return;
 
 	roomba->setDigitLeds(leds->digits[3], leds->digits[2], leds->digits[1], leds->digits[0]);
 }
 
-void songReceived(const roomba_500_series::Song::ConstPtr& song)
+void songReceived(const irobotcreate2::Song::ConstPtr& song)
 {
 	unsigned char notes[song->notes.size()];
 	unsigned char lengths[song->notes.size()];
@@ -99,7 +97,7 @@ void songReceived(const roomba_500_series::Song::ConstPtr& song)
 	roomba->setSong(song->song_number, song->notes.size(), notes, lengths);
 }
 
-void playSongReceived(const roomba_500_series::PlaySong::ConstPtr& song)
+void playSongReceived(const irobotcreate2::PlaySong::ConstPtr& song)
 {
 	roomba->playSong(song->song_number);
 }
@@ -130,21 +128,21 @@ int main(int argc, char** argv)
 	roomba = new irobot::OpenInterface(port.c_str());
 
 	ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("/odom", 50);
-	ros::Publisher battery_pub = n.advertise<roomba_500_series::Battery>("/battery", 50);
-	ros::Publisher bumper_pub = n.advertise<roomba_500_series::Bumper>("/bumper", 50);
-	ros::Publisher buttons_pub = n.advertise<roomba_500_series::Buttons>("/buttons", 50);
-	ros::Publisher cliff_pub = n.advertise<roomba_500_series::RoombaIR>("/cliff", 50);
-	ros::Publisher irbumper_pub = n.advertise<roomba_500_series::RoombaIR>("/ir_bumper", 50);
-	ros::Publisher irchar_pub = n.advertise<roomba_500_series::IRCharacter>("/ir_character", 50);
-	ros::Publisher wheeldrop_pub = n.advertise<roomba_500_series::WheelDrop>("/wheel_drop", 50);
+    ros::Publisher battery_pub = n.advertise<irobotcreate2::Battery>("/battery", 50);
+    ros::Publisher bumper_pub = n.advertise<irobotcreate2::Bumper>("/bumper", 50);
+    ros::Publisher buttons_pub = n.advertise<irobotcreate2::Buttons>("/buttons", 50);
+    ros::Publisher cliff_pub = n.advertise<irobotcreate2::RoombaIR>("/cliff", 50);
+    ros::Publisher irbumper_pub = n.advertise<irobotcreate2::RoombaIR>("/ir_bumper", 50);
+    ros::Publisher irchar_pub = n.advertise<irobotcreate2::IRCharacter>("/ir_character", 50);
+    ros::Publisher wheeldrop_pub = n.advertise<irobotcreate2::WheelDrop>("/wheel_drop", 50);
 
 	tf::TransformBroadcaster tf_broadcaster;
 	
 	ros::Subscriber cmd_vel_sub  = n.subscribe<geometry_msgs::Twist>("/cmd_vel", 1, cmdVelReceived);
-	ros::Subscriber leds_sub  = n.subscribe<roomba_500_series::Leds>("/leds", 1, ledsReceived);
-	ros::Subscriber digitleds_sub  = n.subscribe<roomba_500_series::DigitLeds>("/digit_leds", 1, digitLedsReceived);
-	ros::Subscriber song_sub  = n.subscribe<roomba_500_series::Song>("/song", 1, songReceived);
-	ros::Subscriber playsong_sub  = n.subscribe<roomba_500_series::PlaySong>("/play_song", 1, playSongReceived);
+    ros::Subscriber leds_sub  = n.subscribe<irobotcreate2::Leds>("/leds", 1, ledsReceived);
+    ros::Subscriber digitleds_sub  = n.subscribe<irobotcreate2::DigitLeds>("/digit_leds", 1, digitLedsReceived);
+    ros::Subscriber song_sub  = n.subscribe<irobotcreate2::Song>("/song", 1, songReceived);
+    ros::Subscriber playsong_sub  = n.subscribe<irobotcreate2::PlaySong>("/play_song", 1, playSongReceived);
 	
 	irobot::OI_Packet_ID sensor_packets[1] = {irobot::OI_PACKET_GROUP_100};
 	roomba->setSensorPackets(sensor_packets, 1, OI_PACKET_GROUP_100_SIZE);
@@ -156,8 +154,6 @@ int main(int argc, char** argv)
 		ROS_BREAK();
 	}
 	
-	GoDockAction go_dock("/godock");
-
 	ros::Time current_time, last_time;
 	current_time = ros::Time::now();
 	last_time = ros::Time::now();
@@ -225,7 +221,7 @@ int main(int argc, char** argv)
 
 		// ******************************************************************************************
 		//publish battery
-		roomba_500_series::Battery battery;
+        irobotcreate2::Battery battery;
 		battery.header.stamp = current_time;
 		battery.power_cord = roomba->power_cord_;
 		battery.dock = roomba->dock_;
@@ -237,7 +233,7 @@ int main(int argc, char** argv)
 	
 		// ******************************************************************************************	
 		//publish bumpers
-		roomba_500_series::Bumper bumper;
+        irobotcreate2::Bumper bumper;
 		bumper.left.header.stamp = current_time;
 		bumper.left.state = roomba->bumper_[LEFT];
 		bumper.right.header.stamp = current_time;
@@ -246,7 +242,7 @@ int main(int argc, char** argv)
 	
 		// ******************************************************************************************	
 		//publish buttons
-		roomba_500_series::Buttons buttons;
+        irobotcreate2::Buttons buttons;
 		buttons.header.stamp = current_time;
 		buttons.clean = roomba->buttons_[BUTTON_CLEAN];
 		buttons.spot = roomba->buttons_[BUTTON_SPOT];
@@ -260,7 +256,7 @@ int main(int argc, char** argv)
 
 		// ******************************************************************************************
 		//publish cliff
-		roomba_500_series::RoombaIR cliff;
+        irobotcreate2::RoombaIR cliff;
 		cliff.header.stamp = current_time;
 
 		cliff.header.frame_id = "base_cliff_left";
@@ -285,7 +281,7 @@ int main(int argc, char** argv)
 
 		// ******************************************************************************************
 		//publish irbumper
-		roomba_500_series::RoombaIR irbumper;
+        irobotcreate2::RoombaIR irbumper;
 		irbumper.header.stamp = current_time;
 
 		irbumper.header.frame_id = "base_irbumper_left";
@@ -320,7 +316,7 @@ int main(int argc, char** argv)
 
 		// ******************************************************************************************
 		//publish irchar
-		roomba_500_series::IRCharacter irchar;
+        irobotcreate2::IRCharacter irchar;
 		irchar.header.stamp = current_time;
 		irchar.omni = roomba->ir_char_[OMNI];
 		irchar.left = roomba->ir_char_[LEFT];
@@ -329,7 +325,7 @@ int main(int argc, char** argv)
 
 		// ******************************************************************************************
 		//publish wheeldrop
-		roomba_500_series::WheelDrop wheeldrop;
+        irobotcreate2::WheelDrop wheeldrop;
 		wheeldrop.left.header.stamp = current_time;
 		wheeldrop.left.state = roomba->wheel_drop_[LEFT];
 		wheeldrop.right.header.stamp = current_time;

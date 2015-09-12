@@ -41,8 +41,9 @@
 #include <string>
 #include <netinet/in.h>
 #include <sys/types.h>
-
-#include "roomba_500_series/OpenInterface.h"
+#include <unistd.h>
+#include <iostream>
+#include "../../include/irobotcreate2/OpenInterface.h"
 
 // *****************************************************************************
 // Constructor
@@ -67,8 +68,6 @@ irobot::OpenInterface::OpenInterface(const char * new_serial_port)
 	// Default packets
 	OI_Packet_ID default_packets[2] = {OI_PACKET_RIGHT_ENCODER, OI_PACKET_LEFT_ENCODER};
 	this->setSensorPackets(default_packets, 2, OI_PACKET_RIGHT_ENCODER_SIZE + OI_PACKET_LEFT_ENCODER_SIZE);
-
-	serial_port_ = new cereal::CerealPort();
 }
 
 
@@ -77,7 +76,6 @@ irobot::OpenInterface::OpenInterface(const char * new_serial_port)
 irobot::OpenInterface::~OpenInterface()
 {
 	// Clean up!
-	delete serial_port_;
 }
 
 
@@ -85,12 +83,20 @@ irobot::OpenInterface::~OpenInterface()
 // Open the serial port
 int irobot::OpenInterface::openSerialPort(bool full_control)
 {
-	try{ serial_port_->open(port_name_.c_str(), 115200); }
-	catch(cereal::Exception& e){ return(-1); }
+	try
+	{ 
+        serial_port_.setPort(port_name_);
+        serial_port_.setBaudrate(115200);
+        serial_port_.open();
+    }
+	catch(std::exception& e){
+        std::cerr<<"iRobotCreate2 Error opening serial port: "<<e.what()<<std::endl;
+        return(-1); 
+    }
 
-	this->startOI(full_control);
-
-	return(0);
+	int result = this->startOI(full_control);
+    
+	return(result);
 }
 
 
@@ -98,26 +104,35 @@ int irobot::OpenInterface::openSerialPort(bool full_control)
 // Set the mode
 int irobot::OpenInterface::startOI(bool full_control)
 {	
-	char buffer[1];
+	uint8_t buffer[1];
 
 	usleep(OI_DELAY_MODECHANGE_MS * 1e3);
 	buffer[0] = (char)OI_OPCODE_START;
-	try{ serial_port_->write(buffer, 1); }
-	catch(cereal::Exception& e){ return(-1); }
+	try{ 
+        serial_port_.write(buffer, 1);}
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	OImode_ = OI_MODE_PASSIVE;
 
 	usleep(OI_DELAY_MODECHANGE_MS * 1e3);
 	buffer[0] = (char)OI_OPCODE_CONTROL;
-	try{ serial_port_->write(buffer, 1); }
-	catch(cereal::Exception& e){ return(-1); }
+    try{ 
+        serial_port_.write(buffer, 1);}
+    catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	OImode_ = OI_MODE_SAFE;
 	
 	if(full_control)
 	{
 		usleep(OI_DELAY_MODECHANGE_MS * 1e3);
 		buffer[0] = (char)OI_OPCODE_FULL;
-		try{ serial_port_->write(buffer, 1); }
-		catch(cereal::Exception& e){ return(-1); }
+        try{ 
+            serial_port_.write(buffer, 1);}
+        catch(std::exception& e){
+            std::cerr<<e.what()<<std::endl;
+            return(-1);}
 		OImode_ = OI_MODE_FULL;
 	}
 	return(0);
@@ -131,9 +146,11 @@ int irobot::OpenInterface::closeSerialPort()
 	this->drive(0.0, 0.0);
 	usleep(OI_DELAY_MODECHANGE_MS * 1e3);
 
-	try{ serial_port_->close(); }
-	catch(cereal::Exception& e){ return(-1); }
-
+    try{ 
+        serial_port_.close();}
+    catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	return(0);
 }
 
@@ -142,9 +159,11 @@ int irobot::OpenInterface::closeSerialPort()
 // Send an OP code to the roomba
 int irobot::OpenInterface::sendOpcode(OI_Opcode code)
 {
-	char to_send = code;
-	try{ serial_port_->write(&to_send, 1); }
-	catch(cereal::Exception& e){ return(-1); }
+	uint8_t to_send = code;
+	try{ serial_port_.write(&to_send, 1); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	return(0);
 }
 
@@ -173,22 +192,23 @@ int irobot::OpenInterface::drive(double linear_speed, double angular_speed)
 int irobot::OpenInterface::driveDirect(int left_speed, int right_speed)
 {
 	// Limit velocity
-	int16_t left_speed_mm_s = MAX(left_speed, -ROOMBA_MAX_LIN_VEL_MM_S);
-	left_speed_mm_s = MIN(left_speed, ROOMBA_MAX_LIN_VEL_MM_S);
-	int16_t right_speed_mm_s = MAX(right_speed, -ROOMBA_MAX_LIN_VEL_MM_S);
-	right_speed_mm_s = MIN(right_speed, ROOMBA_MAX_LIN_VEL_MM_S);
+	int16_t left_speed_mm_s = std::max(left_speed, -ROOMBA_MAX_LIN_VEL_MM_S);
+	left_speed_mm_s = std::min(left_speed, ROOMBA_MAX_LIN_VEL_MM_S);
+	int16_t right_speed_mm_s = std::max(right_speed, -ROOMBA_MAX_LIN_VEL_MM_S);
+	right_speed_mm_s = std::min(right_speed, ROOMBA_MAX_LIN_VEL_MM_S);
 	
 	// Compose comand
-	char cmd_buffer[5];
-	cmd_buffer[0] = (char)OI_OPCODE_DRIVE_DIRECT;
-	cmd_buffer[1] = (char)(right_speed_mm_s >> 8);
-	cmd_buffer[2] = (char)(right_speed_mm_s & 0xFF);
-	cmd_buffer[3] = (char)(left_speed_mm_s >> 8);
-	cmd_buffer[4] = (char)(left_speed_mm_s & 0xFF);
+	uint8_t cmd_buffer[5];
+	cmd_buffer[0] = OI_OPCODE_DRIVE_DIRECT;
+	cmd_buffer[1] = (right_speed_mm_s >> 8);
+	cmd_buffer[2] = (right_speed_mm_s & 0xFF);
+	cmd_buffer[3] = (left_speed_mm_s >> 8);
+	cmd_buffer[4] = (left_speed_mm_s & 0xFF);
 
-	try{ serial_port_->write(cmd_buffer, 5); }
-	catch(cereal::Exception& e){ return(-1); }
-
+	try{ serial_port_.write(cmd_buffer, 5); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	return(0);
 }
 
@@ -206,27 +226,31 @@ int irobot::OpenInterface::drivePWM(int left_pwm, int right_pwm)
 // Set the brushes motors status
 int irobot::OpenInterface::brushes(unsigned char side_brush, unsigned char vacuum, unsigned char main_brush, unsigned char side_brush_clockwise, unsigned char main_brush_dir)
 {
-	unsigned char cmd_buffer[2];
+	uint8_t cmd_buffer[2];
 	cmd_buffer[0] = OI_OPCODE_MOTORS;
 	cmd_buffer[1] = side_brush | vacuum<<1 | main_brush<<2 | side_brush_clockwise<<3 | main_brush_dir<<4;
 	
-	try{ serial_port_->write((char*)cmd_buffer, 2); }
-	catch(cereal::Exception& e){ return(-1); }
-	return(0);
+	try{ serial_port_.write((uint8_t*)cmd_buffer, 2); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+    return(0);
 }
 
 // *****************************************************************************
 // Set the brushes motors PWMs
-int irobot::OpenInterface::brushesPWM(char main_brush, char side_brush, char vacuum)
+int irobot::OpenInterface::brushesPWM(uint8_t main_brush, uint8_t side_brush, uint8_t vacuum)
 {
-	char cmd_buffer[4];
-	cmd_buffer[0] = (char)OI_OPCODE_PWM_MOTORS;
+	uint8_t cmd_buffer[4];
+	cmd_buffer[0] = OI_OPCODE_PWM_MOTORS;
 	cmd_buffer[1] = main_brush;
 	cmd_buffer[2] = side_brush;
 	cmd_buffer[3] = vacuum<0 ? 0 : vacuum;
 
-	try{ serial_port_->write(cmd_buffer, 4); }
-	catch(cereal::Exception& e){ return(-1); }
+	try{ serial_port_.write(cmd_buffer, 4); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	return(0);
 }
 
@@ -258,24 +282,34 @@ int irobot::OpenInterface::setSensorPackets(OI_Packet_ID * new_sensor_packets, i
 // Read the sensors
 int irobot::OpenInterface::getSensorPackets(int timeout)
 {
-	char cmd_buffer[num_of_packets_+2];
-	char data_buffer[packets_size_];
+	uint8_t cmd_buffer[num_of_packets_+2];
+	uint8_t data_buffer[packets_size_];
 
 	// Fill in the command buffer to send to the robot
-	cmd_buffer[0] = (char)OI_OPCODE_QUERY;			// Query
+	cmd_buffer[0] = OI_OPCODE_QUERY;			// Query
 	cmd_buffer[1] = num_of_packets_;				// Number of packets
 	for(int i=0 ; i<num_of_packets_ ; i++)
 	{
 		cmd_buffer[i+2] = sensor_packets_[i];		// The packet IDs
 	}
 
-	try{ serial_port_->write(cmd_buffer, num_of_packets_+2); }
-	catch(cereal::Exception& e){ return(-1); }
-	
-	try{ serial_port_->readBytes(data_buffer, packets_size_, timeout); }
-	catch(cereal::Exception& e){ return(-1); }
-	
-	return this->parseSensorPackets((unsigned char*)data_buffer, packets_size_);
+	try{ serial_port_.write(cmd_buffer, num_of_packets_+2); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}	
+	try{ 
+        serial::Timeout T = serial::Timeout::simpleTimeout(timeout);
+        serial_port_.setTimeout(T);
+        bool readable=serial_port_.waitReadable();
+        if (readable)
+            serial_port_.read(data_buffer, packets_size_); 
+        else return(-1);
+    }
+    catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+        
+	return this->parseSensorPackets(/*(unsigned char*)*/data_buffer, packets_size_);
 }
 
 
@@ -283,51 +317,65 @@ int irobot::OpenInterface::getSensorPackets(int timeout)
 // Read the sensors stream
 int irobot::OpenInterface::streamSensorPackets()
 {
-	char data_buffer[packets_size_];
+	uint8_t data_buffer[packets_size_];
 
 	if(!stream_defined_)
 	{
-		char cmd_buffer[num_of_packets_+2];
+		uint8_t cmd_buffer[num_of_packets_+2];
 
 		// Fill in the command buffer to send to the robot
-		cmd_buffer[0] = (char)OI_OPCODE_STREAM;			// Stream
+		cmd_buffer[0] = OI_OPCODE_STREAM;			// Stream
 		cmd_buffer[1] = num_of_packets_;				// Number of packets
 		for(int i=0 ; i<num_of_packets_ ; i++)
 		{
 			cmd_buffer[i+2] = sensor_packets_[i];		// The packet IDs
 		}
-		try{ serial_port_->write(cmd_buffer, num_of_packets_+2); }
-		catch(cereal::Exception& e){ return(-1); }
-		stream_defined_ = true;
+		try{ serial_port_.write(cmd_buffer, num_of_packets_+2); }
+		catch(std::exception& e){
+            std::cerr<<e.what()<<std::endl;
+            return(-1);}
+        stream_defined_ = true;
 	}
-	try{ serial_port_->readBytes(data_buffer, packets_size_, 100); }
-	catch(cereal::Exception& e){ return(-1); }
-	
+	try{
+        serial::Timeout T = serial::Timeout::simpleTimeout(100);
+        serial_port_.setTimeout(T);
+        bool readable=serial_port_.waitReadable();
+        if (readable)
+            serial_port_.read(data_buffer, packets_size_); 
+        else return(-1);
+    }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	return this->parseSensorPackets((unsigned char*)data_buffer, packets_size_);
 }
 
 int irobot::OpenInterface::startStream()
 {
-	char data_buffer[2];
+	uint8_t data_buffer[2];
 
 	data_buffer[0] = OI_OPCODE_PAUSE_RESUME_STREAM;
 	data_buffer[1] = 1;
 
-	try{ serial_port_->write(data_buffer, 2); }
-	catch(cereal::Exception& e){ return(-1); }
-	return(0);
+	try{ serial_port_.write(data_buffer, 2); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+    return(0);
 }
 
 int irobot::OpenInterface::stopStream()
 {
-	char data_buffer[2];
+	uint8_t data_buffer[2];
 
 	data_buffer[0] = OI_OPCODE_PAUSE_RESUME_STREAM;
 	data_buffer[1] = 0;
 
-	try{ serial_port_->write(data_buffer, 2); }
-	catch(cereal::Exception& e){ return(-1); }
-	return(0);
+	try{ serial_port_.write(data_buffer, 2); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+    return(0);
 }
 
 
@@ -1320,8 +1368,8 @@ int irobot::OpenInterface::goDock()
 int irobot::OpenInterface::setSong(unsigned char song_number, unsigned char song_length, unsigned char *notes, unsigned char *note_lengths)
 {
 	int size = 2*song_length+3;
-	unsigned char cmd_buffer[size];
-	unsigned char i;
+	uint8_t cmd_buffer[size];
+    uint8_t i;
 	
 	cmd_buffer[0] = (unsigned char)OI_OPCODE_SONG;
 	cmd_buffer[1] = song_number;
@@ -1333,9 +1381,11 @@ int irobot::OpenInterface::setSong(unsigned char song_number, unsigned char song
 		cmd_buffer[3+(2*i)+1] = note_lengths[i];
 	}
 	
-	try{ serial_port_->write((char*)cmd_buffer, size); }
-	catch(cereal::Exception& e){ return(-1); }
-	return(0);
+	try{ serial_port_.write(cmd_buffer, size); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+    return(0);
 }
 
 
@@ -1348,9 +1398,11 @@ int irobot::OpenInterface::playSong(unsigned char song_number)
 	cmd_buffer[0] = (unsigned char)OI_OPCODE_PLAY;
 	cmd_buffer[1] = song_number;
 	
-	try{ serial_port_->write((char*)cmd_buffer, 2); }
-	catch(cereal::Exception& e){ return(-1); }
-	return(0);
+	try{ serial_port_.write(cmd_buffer, 2); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+    return(0);
 }
 
 
@@ -1358,14 +1410,16 @@ int irobot::OpenInterface::playSong(unsigned char song_number)
 // Set the LEDs
 int irobot::OpenInterface::setLeds(unsigned char check_robot, unsigned char dock, unsigned char spot, unsigned char debris, unsigned char power_color, unsigned char power_intensity)
 {
-	unsigned char cmd_buffer[4];
+    uint8_t cmd_buffer[4];
 	cmd_buffer[0] = (unsigned char)OI_OPCODE_LEDS;
 	cmd_buffer[1] = debris | spot<<1 | dock<<2 | check_robot<<3;
 	cmd_buffer[2] = power_color;
 	cmd_buffer[3] = power_intensity;
 	
-	try{ serial_port_->write((char*)cmd_buffer, 4); }
-	catch(cereal::Exception& e){ return(-1); }
+	try{ serial_port_.write(cmd_buffer, 4); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
 	return(0);
 }
 
@@ -1374,14 +1428,16 @@ int irobot::OpenInterface::setLeds(unsigned char check_robot, unsigned char dock
 // Set the scheduling LEDs
 int irobot::OpenInterface::setSchedulingLeds(unsigned char sun, unsigned char mon, unsigned char tue, unsigned char wed, unsigned char thu, unsigned char fri, unsigned char sat, unsigned char colon, unsigned char pm, unsigned char am, unsigned char clock, unsigned char schedule)
 {
-	unsigned char cmd_buffer[3];
+    uint8_t cmd_buffer[3];
 	cmd_buffer[0] = OI_OPCODE_SCHEDULE_LEDS;
 	cmd_buffer[1] = sun | mon<<1 | tue<<2 | wed<<3 | thu<<4 | fri<<5 | sat<<6;
 	cmd_buffer[2] = colon | pm<<1 | am<<2 | clock<<3 | schedule<<4;
 	
-	try{ serial_port_->write((char*)cmd_buffer, 3); }
-	catch(cereal::Exception& e){ return(-1); }
-	return(0);
+	try{ serial_port_.write(cmd_buffer, 3); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+    return(0);
 }
 
 
@@ -1389,16 +1445,18 @@ int irobot::OpenInterface::setSchedulingLeds(unsigned char sun, unsigned char mo
 // Set the digit LEDs
 int irobot::OpenInterface::setDigitLeds(unsigned char digit3, unsigned char digit2, unsigned char digit1, unsigned char digit0)
 {
-	unsigned char cmd_buffer[5];
-	cmd_buffer[0] = (unsigned char)OI_OPCODE_DIGIT_LEDS_ASCII;
+	uint8_t cmd_buffer[5];
+	cmd_buffer[0] = (uint8_t)OI_OPCODE_DIGIT_LEDS_ASCII;
 	cmd_buffer[1] = digit3;
 	cmd_buffer[2] = digit2;
 	cmd_buffer[3] = digit1;
 	cmd_buffer[4] = digit0;
 	
-	try{ serial_port_->write((char*)cmd_buffer, 5); }
-	catch(cereal::Exception& e){ return(-1); }
-	return(0);
+	try{ serial_port_.write(cmd_buffer, 5); }
+	catch(std::exception& e){
+        std::cerr<<e.what()<<std::endl;
+        return(-1);}
+    return(0);
 }
 
 
