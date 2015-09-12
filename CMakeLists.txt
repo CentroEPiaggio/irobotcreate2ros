@@ -40,9 +40,9 @@ catkin_package()
 
 include_directories(include)
 
-add_executable(roomba500 src/irobotcreate2/OpenInterface.cpp src/roomba500_lightweight.cpp)
-add_executable(roomba560 src/irobotcreate2/OpenInterface.cpp src/roomba560.cpp)
+add_executable(irobotcreate2_lightweight src/irobotcreate2/OpenInterface.cpp src/irobotcreate2_lightweight.cpp)
+add_executable(irobotcreate2 src/irobotcreate2/OpenInterface.cpp src/irobotcreate2.cpp)
 
-target_link_libraries(roomba500 ${catkin_LIBRARIES})
+target_link_libraries(irobotcreate2_lightweight ${catkin_LIBRARIES})
 
-target_link_libraries(roomba560 ${catkin_LIBRARIES})
+target_link_libraries(irobotcreate2 ${catkin_LIBRARIES})
