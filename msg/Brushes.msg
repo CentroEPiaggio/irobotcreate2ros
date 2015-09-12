@@ -1,0 +1,9 @@
+Header header
+bool main_brush
+int8 main_brush_pwm
+bool main_brush_direction
+bool side_brush
+int8 side_brush_pwm
+bool side_brush_clockwise
+bool vacuum
+int8 vacuum_pwm

@@ -1,0 +1,9 @@
+Header header
+bool clean
+bool spot
+bool dock
+bool day
+bool hour
+bool minute
+bool schedule
+bool clock

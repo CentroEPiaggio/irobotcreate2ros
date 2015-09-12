@@ -1,0 +1,13 @@
+Header header
+bool sunday
+bool monday
+bool tuesday
+bool wednesday
+bool thursday
+bool friday
+bool saturday
+bool colon
+bool pm
+bool am
+bool clock
+bool schedule
