@@ -40,6 +40,7 @@
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>				// odom
 #include <geometry_msgs/Twist.h>			// cmd_vel
+#include <std_msgs/String.h>
 #include <irobotcreate2/Battery.h>		// battery
 #include <irobotcreate2/Bumper.h>		// bumper
 #include <irobotcreate2/Buttons.h>		// buttons
@@ -69,6 +70,55 @@ std::string prefixTopic(std::string prefix, char * name)
 void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel)
 {
 	roomba->drive(cmd_vel->linear.x, cmd_vel->angular.z);
+}
+
+void cmdModeReceived(const std_msgs::String::ConstPtr& cmd_)
+{
+        std::cout<<"Received command: "<<cmd_;
+	
+	std::string cmd = cmd_->data.c_str();
+
+	uint8_t digit0=32,digit1=32,digit2=32,digit3=32;
+	bool warning=0,dock=0,spot=0,dirt=0,clean_col=255,clean_int=255;
+
+	if(cmd=="exit") return;
+	else if(cmd=="start")
+	{
+	    roomba->Start();
+	}
+	else if(cmd=="stop")
+	{
+	    roomba->Stop();
+	}
+	else if(cmd=="reset")
+	{
+	    roomba->Reset();
+	}
+	else if(cmd=="powerdown")
+	{
+	    roomba->powerDown();
+	}
+	else if(cmd=="safe")
+	{
+	    roomba->Safe();
+	    digit0=83;
+	    digit1=65;
+	    digit2=70;
+	    digit3=69;
+	    dirt=true;
+	}
+	else if(cmd=="full")
+	{
+	    roomba->Full();
+	    digit0=70;
+	    digit1=85;
+	    digit2=76;
+	    digit3=76;
+	    dirt=true;
+	}
+	
+	roomba->setDigitLeds(digit0,digit1,digit2,digit3);
+	roomba->setLeds(warning, dock, spot, dirt, clean_col, clean_int);
 }
 
 void ledsReceived(const irobotcreate2::Leds::ConstPtr& leds)
@@ -143,6 +193,7 @@ int main(int argc, char** argv)
     ros::Subscriber digitleds_sub  = n.subscribe<irobotcreate2::DigitLeds>("/digit_leds", 1, digitLedsReceived);
     ros::Subscriber song_sub  = n.subscribe<irobotcreate2::Song>("/song", 1, songReceived);
     ros::Subscriber playsong_sub  = n.subscribe<irobotcreate2::PlaySong>("/play_song", 1, playSongReceived);
+    ros::Subscriber mode_sub  = n.subscribe<std_msgs::String>("/mode", 1, cmdModeReceived);
 	
 	irobot::OI_Packet_ID sensor_packets[1] = {irobot::OI_PACKET_GROUP_100};
 	roomba->setSensorPackets(sensor_packets, 1, OI_PACKET_GROUP_100_SIZE);
