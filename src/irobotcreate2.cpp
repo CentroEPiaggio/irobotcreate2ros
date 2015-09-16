@@ -74,12 +74,7 @@ void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel)
 
 void cmdModeReceived(const std_msgs::String::ConstPtr& cmd_)
 {
-        std::cout<<"Received command: "<<cmd_;
-	
 	std::string cmd = cmd_->data.c_str();
-
-	uint8_t digit0=32,digit1=32,digit2=32,digit3=32;
-	bool warning=0,dock=0,spot=0,dirt=0,clean_col=255,clean_int=255;
 
 	if(cmd=="exit") return;
 	else if(cmd=="start")
@@ -101,24 +96,11 @@ void cmdModeReceived(const std_msgs::String::ConstPtr& cmd_)
 	else if(cmd=="safe")
 	{
 	    roomba->Safe();
-	    digit0=83;
-	    digit1=65;
-	    digit2=70;
-	    digit3=69;
-	    dirt=true;
 	}
 	else if(cmd=="full")
 	{
 	    roomba->Full();
-	    digit0=70;
-	    digit1=85;
-	    digit2=76;
-	    digit3=76;
-	    dirt=true;
 	}
-	
-	roomba->setDigitLeds(digit0,digit1,digit2,digit3);
-	roomba->setLeds(warning, dock, spot, dirt, clean_col, clean_int);
 }
 
 void ledsReceived(const irobotcreate2::Leds::ConstPtr& leds)

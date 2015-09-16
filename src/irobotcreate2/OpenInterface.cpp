@@ -107,18 +107,16 @@ int irobot::OpenInterface::startOI(bool full_control)
 	uint8_t buffer[1];
 
 	usleep(OI_DELAY_MODECHANGE_MS * 1e3);
-	buffer[0] = (char)OI_OPCODE_START;
 	try{ 
-        serial_port_.write(buffer, 1);}
+        Start();}
 	catch(std::exception& e){
         std::cerr<<e.what()<<std::endl;
         return(-1);}
 	OImode_ = OI_MODE_PASSIVE;
 
 	usleep(OI_DELAY_MODECHANGE_MS * 1e3);
-	buffer[0] = (char)OI_OPCODE_CONTROL;
     try{ 
-        serial_port_.write(buffer, 1);}
+        Safe();}
     catch(std::exception& e){
         std::cerr<<e.what()<<std::endl;
         return(-1);}
@@ -127,9 +125,8 @@ int irobot::OpenInterface::startOI(bool full_control)
 	if(full_control)
 	{
 		usleep(OI_DELAY_MODECHANGE_MS * 1e3);
-		buffer[0] = (char)OI_OPCODE_FULL;
         try{ 
-            serial_port_.write(buffer, 1);}
+            Full();}
         catch(std::exception& e){
             std::cerr<<e.what()<<std::endl;
             return(-1);}
@@ -194,14 +191,24 @@ int irobot::OpenInterface::Reset()
 // Set Safe mode for the roomba
 int irobot::OpenInterface::Safe()
 {
-	return sendOpcode(OI_OPCODE_SAFE);
+	int ret = sendOpcode(OI_OPCODE_SAFE);
+
+	setDigitLeds(83,65,70,69);
+	setLeds(0, 0, 0, 1, 1, 1);
+
+	return ret;
 }
 
 // *****************************************************************************
 // Set Full mode for the roomba
 int irobot::OpenInterface::Full()
 {
-	return sendOpcode(OI_OPCODE_FULL);
+	int ret = sendOpcode(OI_OPCODE_FULL);
+
+	setDigitLeds(70,85,76,76);
+	setLeds(0, 0, 0, 1, 1, 1);
+
+	return ret;
 }
 
 // *****************************************************************************
