@@ -306,6 +306,15 @@ namespace irobot
 		 *  \param full_control    Whether to set the Roomba on OImode full or not.
 		 */
 		int openSerialPort(bool full_control);
+		//! Start OI
+		/*!
+		*  Start the OI, change to roomba to a OImode that allows control.
+		*
+		*  \param full_control    Whether to set the Roomba on OImode full or not.
+		*
+		*  \return 0 if ok, -1 otherwise.
+		*/
+		int startOI(bool full_control);
 		//! Close the serial port
 		int closeSerialPort();
 	
@@ -624,16 +633,6 @@ namespace irobot
 		*  \return An unsigned int value.
 		*/
 		int buffer2unsigned_int(unsigned char * buffer, int index);
-	
-		//! Start OI
-		/*!
-		*  Start the OI, change to roomba to a OImode that allows control.
-		*
-		*  \param full_control    Whether to set the Roomba on OImode full or not.
-		*
-		*  \return 0 if ok, -1 otherwise.
-		*/
-		int startOI(bool full_control);
 		//! Send OP code
 		/*!
 		*  Send an OP code to Roomba.

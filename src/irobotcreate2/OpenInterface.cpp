@@ -94,9 +94,9 @@ int irobot::OpenInterface::openSerialPort(bool full_control)
         return(-1); 
     }
 
-	int result = this->startOI(full_control);
+// 	int result = this->startOI(full_control);
     
-	return(result);
+	return(0);
 }
 
 

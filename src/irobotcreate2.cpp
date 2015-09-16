@@ -209,6 +209,8 @@ int main(int argc, char** argv)
 	current_time = ros::Time::now();
 	last_time = ros::Time::now();
 
+	bool first_loop=true;
+
 	ros::Rate r(10.0);
 	while(n.ok())
 	{
@@ -385,6 +387,8 @@ int main(int argc, char** argv)
 		
 		ros::spinOnce();
 		r.sleep();
+		
+		if(first_loop) {roomba->startOI(true); first_loop=false;}
 	}
 	
 	roomba->powerDown();
