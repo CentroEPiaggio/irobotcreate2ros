@@ -1,0 +1,5 @@
+<launch>
+    <node name="irobot" pkg="irobotcreate2" type="irobotcreate2"/>
+    <node name="joy" pkg="irobotcreate2" type="joy_node"/>
+    <node name="joy_driver" pkg="joy" type="joy_node"/>
+</launch>

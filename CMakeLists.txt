@@ -55,6 +55,7 @@ include_directories(include)
 
 add_executable(irobotcreate2_lightweight src/irobotcreate2/OpenInterface.cpp src/irobotcreate2_lightweight.cpp)
 add_executable(irobotcreate2 src/irobotcreate2/OpenInterface.cpp src/irobotcreate2.cpp)
+add_executable(joy_node src/joy_node.cpp)
 
 add_executable(basic_commands src/irobotcreate2/OpenInterface.cpp src/basic_commands.cpp)
 
@@ -63,3 +64,5 @@ target_link_libraries(irobotcreate2_lightweight ${catkin_LIBRARIES})
 target_link_libraries(irobotcreate2 ${catkin_LIBRARIES})
 
 target_link_libraries(basic_commands ${catkin_LIBRARIES})
+
+target_link_libraries(joy_node ${catkin_LIBRARIES})
