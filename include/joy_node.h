@@ -12,6 +12,7 @@ private:
   ros::Subscriber joy_sub;
   ros::Publisher twist_pub;
   geometry_msgs::Twist twist;
+  bool dual_mode=true;
 
   void joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg);
 };
