@@ -2,6 +2,7 @@
 *
 * Software License Agreement (BSD License)
 *
+*  Copyright (c) 2015, University of Pisa
 *  Copyright (c) 2010, ISR University of Coimbra.
 *  All rights reserved.
 *
@@ -32,8 +33,11 @@
 *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 *  POSSIBILITY OF SUCH DAMAGE.
 *
+* Author: Alessandro Settimi 2015
+* Author: Mirko Ferrati 2015
 * Author: Gonçalo Cabrita on 07/10/2010
 *********************************************************************/
+
 #define NODE_VERSION 2.01
 
 #include <ros/ros.h>
