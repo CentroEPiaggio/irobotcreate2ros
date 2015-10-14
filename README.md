@@ -19,23 +19,23 @@ rosrun irobotcreate2 irobotcreate2
 ```
 to run the basic software and have access to the following topics:
 
-/battery
-/bumper
-/buttons
-/cliff
-/cmd_vel
-/digit_leds
-/ir_bumper
-/ir_character
-/leds
-/mode
-/odom
-/play_song
-/rosout
-/rosout_agg
-/song
-/tf
-/wheel_drop
+- /battery
+- /bumper
+- /buttons
+- /cliff
+- /cmd_vel
+- /digit_leds
+- /ir_bumper
+- /ir_character
+- /leds
+- /mode
+- /odom
+- /play_song
+- /rosout
+- /rosout_agg
+- /song
+- /tf
+- /wheel_drop
 
 you can read sensors (/battery, /buttons, /bumper, ...) and send commands (/cmd_vel, ...).
 
