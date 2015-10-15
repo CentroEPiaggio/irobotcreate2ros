@@ -1,0 +1,6 @@
+echo ---
+echo Generating URDF...
+rosrun xacro xacro.py -o lcr.urdf lcr.urdf.xacro 
+echo Generating SDF...
+gz sdf -p lcr.urdf > model.sdf
+echo ---

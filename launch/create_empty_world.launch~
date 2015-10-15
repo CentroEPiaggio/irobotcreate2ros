@@ -1,0 +1,10 @@
+<launch>
+
+    <param name="/use_sim_time" value="True" /> 
+
+    <node name="gazebo" pkg="gazebo" type="gazebo" 
+          args="$(find gazebo_worlds)/worlds/empty.world" output="screen" respawn="false" />
+    
+    <include file="$(find irobot_create_description)/launch/create_mobile_base.launch" />
+
+</launch>

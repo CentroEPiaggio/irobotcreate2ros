@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+
+<robot
+    xmlns:xacro="http://www.ros.org/wiki/xacro" name="create_base">
+
+    <!-- Included URDF Files -->
+    <xacro:include filename="$(find irobotcreate2)/urdf/create_materials.urdf.xacro" />
+    <xacro:include filename="$(find irobotcreate2)/urdf/create_wheel.xacro" />
+
+    <!-- Properties (Constants) -->
+    <xacro:property name="M_PI" value="3.14159"/>
+    
+    <xacro:property name="base_size_x" value="0.217" />
+    <xacro:property name="base_size_y" value="0.280" />
+    <xacro:property name="base_size_z" value="0.155" />
+    
+    <xacro:property name="top_size_x" value="0.3937" />
+    <xacro:property name="top_size_y" value="0.3556" />
+    <xacro:property name="top_size_z" value="0.0020" />
+    
+    <xacro:property name="wheel_radius" value="0.0346" />
+    <xacro:property name="wheel_length" value="0.02" />
+    <xacro:property name="caster_wheel_offset_y" value="0.17" />
+    
+    <xacro:macro name="create">
+        <!-- base_footprint is a fictitious link(frame) that is on the ground right below base_link origin,
+             navigation stack depends on this frame -->
+        <link name="base_footprint">
+            <inertial>
+                <mass value="0.0001" />
+                <origin xyz="0 0 0" />
+                <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                         iyy="0.0001" iyz="0.0" 
+                         izz="0.0001" />
+            </inertial>
+
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.001 0.001 0.001" />
+                </geometry>
+                <material name="Green" />
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 ${base_size_z/2 + 0.051}" rpy="0 0 0" />
+                <geometry>
+                  <box size="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_footprint_joint" type="fixed">
+            <!-- NB: While you would think this would make it go up, it is oddly reversed.
+                 This moves the joint to 0,0,0 where we want it for rviz, etc. -->
+            <origin xyz="0 0 ${base_size_z/2 + 0.051}" rpy="0 0 0" />        
+            <parent link="base_footprint"/>
+            <child link="base_link" />
+        </joint>
+
+        <!-- Links and Joints (i.e., the robot) -->
+        <link name="base_link">
+            <inertial>
+                <mass value="12" />
+                <origin xyz="${-base_size_x/2} 0 ${-base_size_z/2}" />
+                <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                         iyy="1.0" iyz="0.0" 
+                         izz="1.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="package://irobotcreate2/meshes/create_body.dae"/>
+                </geometry>
+                <material name="Blue" />
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="package://irobotcreate2/meshes/create_body.stl"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="rear_wheel_joint" type="continuous" >
+            <origin xyz="-0.12 0 -0.035" rpy="0 0 0" />   
+            <parent link="base_link" />
+            <child link="rear_wheel_link"/>
+            <axis xyz="0 1 0" />
+            <anchor xyz="0 0 0" />
+            <limit effort="10" velocity="100" k_velocity="0" />
+            <joint_properties damping="0.0" friction="0.0" />
+        </joint>
+
+        <link name="rear_wheel_link">
+            <inertial>
+                <mass value="0.001"/>
+                <origin xyz="0 0 0" />
+                <inertia  ixx="0.012411765597" ixy="-0.000711733678" ixz="0.00050272983"
+                          iyy="0.015218160428" iyz="-0.000004273467"
+                          izz="0.011763977943" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+                <geometry>
+                    <sphere radius="0.008" />
+                </geometry>
+                <material name="Blue" />
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+                <geometry>
+                    <sphere radius="0.008" />
+                </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="rear_wheel_link">
+            <mu1>10.0</mu1>
+            <mu2>10.0</mu2>
+            <kp>1000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo>
+
+        <joint name="base_caster_support_joint" type="continuous">
+            <origin xyz="0.13 0 -0.023" rpy="0 0 0" />
+            <parent link="base_link" />
+            <child link="base_caster_support_link"/>
+            <axis xyz="0 0 1" />
+            <anchor xyz="0.01 0 0" />
+            <limit effort="100" velocity="100" k_velocity="0" />
+            <joint_properties damping="0.0" friction="0.0" />
+        </joint>
+
+        <transmission type="pr2_mechanism_model/SimpleTransmission" name="rear_wheel_trans">
+            <actuator name="rear_wheel_motor" />
+            <joint name="rear_wheel_joint" />
+            <mechanicalReduction>1.0</mechanicalReduction>
+        </transmission>
+
+        <link name="base_caster_support_link">
+            <inertial>
+                <mass value="25.0"/>
+                <origin xyz="0 0 0" />
+                <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+                         iyy="0.01" iyz="0.0"
+                         izz="0.01" />
+            </inertial>
+            
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="0.001" length="0.037" />
+                </geometry>
+            </visual>
+            
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="0.001" length="0.037" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="caster_wheel_joint" type="continuous">
+            <origin xyz="-0.008 0 -0.0130" rpy="0 0 0" />
+            <parent link="base_caster_support_link" />
+            <child link="caster_wheel_link" />      
+            <axis xyz="0 1 0" />
+            <anchor xyz="0 0 0" />
+            <limit effort="100" velocity="100" k_velocity="0" />
+            <joint_properties damping="0.0" friction="0.0" />
+        </joint>
+
+        <transmission type="pr2_mechanism_model/SimpleTransmission" name="caster_wheel_trans">
+            <actuator name="caster_wheel_motor" />
+            <joint name="caster_wheel_joint" />
+            <mechanicalReduction>1.0</mechanicalReduction>
+        </transmission>
+
+        <link name="caster_wheel_link">
+            <inertial>
+                <mass value="1.0" /> 
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <inertia  ixx="0.012411765597" ixy="-0.000711733678" ixz="0.00050272983"
+                          iyy="0.015218160428" iyz="-0.000004273467"
+                          izz="0.011763977943" />
+            </inertial>
+            
+            <visual>
+                <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+                <geometry>
+                    <cylinder radius="0.007" length="0.015" /> 
+                </geometry>
+            </visual>
+            
+            <collision>
+            <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+            <geometry>
+                    <cylinder radius="0.007" length="0.015" /> 
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="caster_wheel_link">
+            <mu1>50.0</mu1>
+            <mu2>50.0</mu2>
+            <kp>1000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo>
+
+        <!-- MACRO INSTANTIATION -->
+
+        <create_wheel suffix="left" parent="base_link" reflect="0.75"/>
+        <create_wheel suffix="right" parent="base_link" reflect="-0.75"/>
+
+        <!-- CONTROLLERS -->
+
+        <gazebo>
+            <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+                <alwaysOn>true</alwaysOn>
+                <update>100</update>
+                <updateRate>100.0</updateRate>
+                <leftJoint>base_link_right_wheel_joint</leftJoint>
+                <rightJoint>base_link_left_wheel_joint</rightJoint>
+                <wheelSeparation>${caster_wheel_offset_y*2}</wheelSeparation>
+                <wheelDiameter>${wheel_radius*2}</wheelDiameter>
+                <torque>50</torque>
+                <robotNamespace>/</robotNamespace>
+                <topicName>cmd_vel</topicName>
+            </plugin>
+
+            <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>100.0</updateRate>
+                <bodyName>base_link</bodyName>
+                <topicName>base_pose_ground_truth</topicName>
+                <gaussianNoise>0.01</gaussianNoise>
+                <frameName>map</frameName>
+                <xyzOffsets>0 0 0</xyzOffsets> 
+                <rpyOffsets>0 0 0</rpyOffsets>
+
+            </plugin>
+
+            <canonicalBody>base_footprint</canonicalBody>
+
+            <!-- this publishes empty joint_states due to no transmission, but
+             triggering robot_state_publisher to publish tf between fixed joints in create,
+             (e.g. base_laser_link for the base_scan frame) -->
+            <plugin name="gazebo_ros_controller_manager" filename="libgazebo_ros_controller_manager.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>100.0</updateRate>
+            </plugin>
+        </gazebo>
+
+        <!-- GAZEBO MATERIALS -->
+
+        <gazebo reference="base_link">
+            <material>Create/GreyTextured</material>
+        </gazebo>
+        
+        <gazebo reference="rear_wheel_link">
+            <material>Create/Black</material>
+        </gazebo>
+        
+        <gazebo reference="caster_wheel_link">
+            <material>Create/Black</material>
+        </gazebo>
+        
+        <gazebo reference="base_caster_box_link">
+            <material>Create/Black</material>
+        </gazebo>
+        
+        <gazebo reference="base_caster_support_link">
+            <material>Create/Black</material>
+        </gazebo>
+    </xacro:macro>
+</robot>

@@ -1,0 +1,19 @@
+<launch>
+    <!-- send the create robot XML to param server -->
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find irobot_create_description)/urdf/create.urdf.xacro'" />
+    
+    <!-- push robot_description to factory and spawn robot in gazebo -->
+    <node name="spawn_create" pkg="gazebo_tools" type="gazebo_model" args="-z 0.01 -p robot_description spawn robot_description" respawn="false" output="screen" />
+    
+    <!-- start robot state publisher -->
+    <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" output="screen" >
+        <param name="publish_frequency" type="double" value="10.0" />
+        <param name="tf_prefix" type="string" value="" />
+    </node>
+    
+    <!--
+    <node pkg="fake_localization" type="fake_localization" name="fake_localization" respawn="true" output="screen" >
+        <param name="odom_frame_id" value="odom"/>
+    </node>
+    -->
+</launch>

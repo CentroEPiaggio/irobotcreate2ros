@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="axis_gazebo" params="name">
+
+    <gazebo reference="${name}_axis">
+        <gravity>true</gravity>
+        <material>Gazebo/Red</material>
+        <mu1>0.8</mu1>
+        <mu2>0.8</mu2>
+    </gazebo>
+
+</xacro:macro>
+</robot>

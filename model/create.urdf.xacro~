@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<robot 
+    xmlns:xacro="http://www.ros.org/wiki/xacro" name="create"
+    xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"> 
+    
+    <!-- Included URDF Files -->
+    <xacro:include filename="$(find irobotcreate2)/urdf/create_base.xacro" />
+
+    <create />
+</robot>
