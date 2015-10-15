@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="iRobot_gazebo">
+    
+    <gazebo reference="base_link">
+    </gazebo>
+    <gazebo reference="ground">
+    </gazebo>
+    <gazebo reference="sphere">
+      <gravity>true</gravity>
+      <material>Gazebo/Grey</material>
+      <mu1>0</mu1>
+      <mu2>0</mu2>
+      <kp>10000000</kp>
+      <kd>1</kd>
+      <fdir1>1 0 0</fdir1>
+      <minDepth>0.0001</minDepth>
+      <maxContacts>1</maxContacts>
+    </gazebo>
+    <gazebo reference="chassis">
+      <gravity>true</gravity>
+      <material>Gazebo/Yellow</material>
+    </gazebo>
+
+    <gazebo >
+      <static>false</static>
+      <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+        <rosDebugLevel>Debug</rosDebugLevel>
+        <publishWheelTF>false</publishWheelTF>
+        <publishWheelJointState>true</publishWheelJointState>
+        <alwaysOn>true</alwaysOn>
+        <leftJoint>left_wheel_rot_joint</leftJoint>
+        <rightJoint>right_wheel_rot_joint</rightJoint>
+        <wheelSeparation>0.32</wheelSeparation>
+        <wheelDiameter>0.14</wheelDiameter>
+        <torque>20</torque>
+        <wheelAcceleration>1.8</wheelAcceleration>
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometrySource>encoder</odometrySource>
+        <robotBaseFrame>base_link</robotBaseFrame>
+        <updateRate>10.0</updateRate>
+      </plugin>
+
+      <plugin filename="libgazebo_ros_joint_state_publisher.so" name="joint_state_publisher">
+        <jointName>left_wheel_rot_joint, right_wheel_rot_joint</jointName>
+        <updateRate>10.0</updateRate>
+        <alwaysOn>true</alwaysOn>
+      </plugin>
+      
+      <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
+             <bodyName>base_link</bodyName>
+             <updateRate>100.0</updateRate>
+             <topicName>imu_data</topicName>
+             <serviceName>imu_service</serviceName>
+             <gaussianNoise>0.1</gaussianNoise>
+             <xyzOffset>0 0 0</xyzOffset>
+             <rpyOffset>0 0 0</rpyOffset>
+       </plugin>
+    </gazebo>
+    
+    
+
+</xacro:macro>
+</robot>

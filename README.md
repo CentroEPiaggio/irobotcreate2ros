@@ -11,6 +11,11 @@ Compiling
 ---
 Just clone the repository in the src folder of a catkin workspace. Then run catkin_make.
 
+To generate the model you have to launch in the model folder the dedicated script:
+```
+source generate_model.sh
+```
+
 Usage
 ---
 ---

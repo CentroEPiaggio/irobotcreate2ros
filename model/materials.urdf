@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot>
+  <material name="iRobot/Green">
+    <color rgba="0.0 0.6 0.0 1.0"/>
+  </material>
+  
+  <material name="iRobot/Yellow">
+    <color rgba="1.0 1.0 0.0 1.0"/>
+  </material>
+
+  <material name="iRobot/Blue">
+    <color rgba="0.0 0.5 1.0 1.0"/>
+  </material>
+
+  <material name="iRobot/LightYellow">
+    <color rgba="1.0 1.0 0.6 1.0"/>
+  </material>
+
+  <material name="iRobot/Grey">
+    <color rgba="0.75 0.75 0.75 1.0"/>
+  </material>
+
+  <material name="iRobot/Black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+
+  <material name="iRobot/Red">
+    <color rgba="0.8 0.0 0.0 1.0"/>
+  </material>
+</robot>

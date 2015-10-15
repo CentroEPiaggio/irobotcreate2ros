@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="shelf">
+  
+<xacro:property name="pi" value="3.1415926535897931"/>
+<xacro:property name="width_shelf" value="0.005" />
+<xacro:property name="radius" value="0.002" />
+
+<xacro:macro name="model_shelf" params="name parent height">
+    <joint name="${name}1_rot_joint" type="fixed">
+        <origin xyz="0.1 0.1 ${height/2-width_shelf/2}" rpy="0 0 0"/>
+        <parent link="${parent}"/>
+        <child link="${name}1_link"/>
+    </joint>
+    <link name="${name}1_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.01"/>
+            <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+            <material name="iRobot/Grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="${name}2_rot_joint" type="fixed">
+        <origin xyz="0.1 -0.1 ${height/2-width_shelf/2}" rpy="0 0 0"/>
+        <parent link="${parent}"/>
+        <child link="${name}2_link"/>
+    </joint>
+    <link name="${name}2_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.01"/>
+            <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+            <material name="iRobot/Grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="${name}3_rot_joint" type="fixed">
+        <origin xyz="-0.1 -0.1 ${height/2-width_shelf/2}" rpy="0 0 0"/>
+        <parent link="${parent}"/>
+        <child link="${name}3_link"/>
+    </joint>
+    <link name="${name}3_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.01"/>
+            <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+            <material name="iRobot/Grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="${name}4_rot_joint" type="fixed">
+        <origin xyz="-0.1 0.1 ${height/2-width_shelf/2}" rpy="0 0 0"/>
+        <parent link="${parent}"/>
+        <child link="${name}4_link"/>
+    </joint>
+    <link name="${name}4_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.01"/>
+            <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+            <material name="iRobot/Grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${height-width_shelf}" radius="${radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="${name}_shelf_joint" type="fixed">
+        <origin xyz="0 0 ${height-width_shelf}" rpy="0 0 0"/>
+        <parent link="${parent}"/>
+        <child link="${name}"/>
+    </joint>
+    <link name="${name}">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.01"/>
+            <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${width_shelf}" radius="0.15"/>
+            </geometry>
+            <material name="iRobot/Grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${width_shelf}" radius="0.15"/>
+            </geometry>
+        </collision>
+    </link>
+       
+</xacro:macro>    
+</robot>
