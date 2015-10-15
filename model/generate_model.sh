@@ -1,6 +1,6 @@
 echo ---
 echo Generating URDF...
-rosrun xacro xacro.py -o iRobot.urdf iRobot.urdf.xacro 
+rosrun xacro xacro.py -o ../iRobot/iRobot.urdf iRobot.urdf.xacro 
 echo Generating SDF...
-gz sdf -p iRobot.urdf > model.sdf
+gz sdf -p ../iRobot/iRobot.urdf > ../iRobot/iRobot.sdf
 echo ---
