@@ -16,6 +16,14 @@ To generate the model you have to launch in the model folder the dedicated scrip
 source generate_model.sh
 ```
 
+To simulate the robot in Gazebo you first have to add this lines to your bashrc:
+
+```
+source /usr/share/gazebo/setup.sh
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(rospack find irobotcreate2)
+export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:$(rospack find irobotcreate2)
+```
+
 Usage
 ---
 ---
