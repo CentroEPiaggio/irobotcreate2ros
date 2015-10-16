@@ -30,4 +30,4 @@
 # Miscellaneous
 *.kdev4
 *.kdev*
-.*~
+*.*~
