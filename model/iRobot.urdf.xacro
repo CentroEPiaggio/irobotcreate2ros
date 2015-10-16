@@ -49,7 +49,7 @@
 
     <xacro:model_axis name="left_axis" 
                       parent="chassis">
-    <origin xyz="-0.04 0.14 -0.02" rpy="0 0 0"/>
+    <origin xyz="0 0.14 -0.02" rpy="0 0 0"/>
     </xacro:model_axis>
     
    <xacro:model_wheel name="left_wheel" 
@@ -62,7 +62,7 @@
     
     <xacro:model_axis name="right_axis" 
                       parent="chassis">
-    <origin xyz="-0.04 -0.14 -0.02" rpy="0 0 0"/>
+    <origin xyz="0 -0.14 -0.02" rpy="0 0 0"/>
     </xacro:model_axis>
     
     <xacro:model_wheel name="right_wheel" 
@@ -73,14 +73,14 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
     </xacro:model_wheel>
     
-    <joint name="sphere_joint" type="revolute">
+    <joint name="sphere_joint1" type="revolute">
         <origin xyz="0.14 0 -0.04" rpy="0 0 0"/>
         <axis xyz="0 0 1"/>
         <limit lower="0" upper="0" effort="100" velocity="100"/>
         <parent link="chassis"/>
-        <child link="sphere"/>
+        <child link="sphere1"/>
     </joint>
-    <link name="sphere">
+    <link name="sphere1">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="${sphere_mass}"/>
@@ -101,6 +101,33 @@
         </collision>
     </link>
     
+    <joint name="sphere_joint2" type="revolute">
+        <origin xyz="-0.14 0 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="0" upper="0" effort="100" velocity="100"/>
+        <parent link="chassis"/>
+        <child link="sphere2"/>
+    </joint>
+    <link name="sphere2">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${sphere_mass}"/>
+            <inertia ixx="${2/5*sphere_mass*0.01^2}" ixy="0.0" ixz="0.0" iyy="${2/5*sphere_mass*0.01^2}" iyz="0.0" izz="${2/5*sphere_mass*0.01^2}"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.01"/>
+            </geometry>
+            <material name="iRobot/Grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.01"/>
+            </geometry>
+        </collision>
+    </link>
 <!--    <joint name="sphere_to_ground" type="fixed">
         <origin xyz="0 0 -0.03" rpy="0 0 0"/>
         <parent link="sphere"/>
@@ -141,13 +168,13 @@
         </collision>
     </link>
     
-    
-    <xacro:hokuyo_laser xyz="0 0 0.05" 
+    <!-- Laser position: x y 0.025(laser height)+parent_height -->
+    <xacro:hokuyo_laser xyz="0 0 ${0.025+0.04}" 
                   rpy="0 0 0"
-                  parent="base_link">
+                  parent="chassis">
     </xacro:hokuyo_laser>
     
-  <!--  <xacro:model_shelf name="first_shelf" 
+<!--    <xacro:model_shelf name="first_shelf" 
                        parent="chassis"
                        height="0.15">
     </xacro:model_shelf>
@@ -155,7 +182,7 @@
     <xacro:model_shelf name="second_shelf" 
                        parent="first_shelf"
                        height="0.25">
-    </xacro:model_shelf>
-    -->
+    </xacro:model_shelf>-->
+    
     <xacro:iRobot_gazebo />
 </robot>

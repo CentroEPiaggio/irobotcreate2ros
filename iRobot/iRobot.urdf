@@ -59,7 +59,7 @@
     </collision>
   </link>
   <joint name="left_axis_base_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.04 0.14 -0.02"/>
+    <origin rpy="0 0 0" xyz="0 0.14 -0.02"/>
     <parent link="chassis"/>
     <child link="left_axis"/>
   </joint>
@@ -129,7 +129,7 @@
     <maxContacts>1</maxContacts>
   </gazebo>
   <joint name="right_axis_base_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.04 -0.14 -0.02"/>
+    <origin rpy="0 0 0" xyz="0 -0.14 -0.02"/>
     <parent link="chassis"/>
     <child link="right_axis"/>
   </joint>
@@ -198,14 +198,41 @@
     <minDepth>0.0001</minDepth>
     <maxContacts>1</maxContacts>
   </gazebo>
-  <joint name="sphere_joint" type="revolute">
+  <joint name="sphere_joint1" type="revolute">
     <origin rpy="0 0 0" xyz="0.14 0 -0.04"/>
     <axis xyz="0 0 1"/>
     <limit effort="100" lower="0" upper="0" velocity="100"/>
     <parent link="chassis"/>
-    <child link="sphere"/>
+    <child link="sphere1"/>
   </joint>
-  <link name="sphere">
+  <link name="sphere1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.3"/>
+      <inertia ixx="0.0012" ixy="0.0" ixz="0.0" iyy="0.0012" iyz="0.0" izz="0.0012"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="iRobot/Grey"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="sphere_joint2" type="revolute">
+    <origin rpy="0 0 0" xyz="-0.14 0 -0.04"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="100" lower="0" upper="0" velocity="100"/>
+    <parent link="chassis"/>
+    <child link="sphere2"/>
+  </joint>
+  <link name="sphere2">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <mass value="0.3"/>
@@ -262,23 +289,24 @@
       </geometry>
     </collision>
   </link>
+  <!-- Laser position: x y 0.025(laser height)+parent_height -->
   <joint name="hokuyo_laser_joint" type="fixed">
     <axis xyz="0 0 1"/>
-    <origin rpy="0 0 0" xyz="0 0 0.05"/>
-    <parent link="base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.065"/>
+    <parent link="chassis"/>
     <child link="hokuyo_laser_link"/>
   </joint>
   <link name="hokuyo_laser_link">
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.1 0.1 0.1"/>
+        <cylinder length="0.05" radius="0.045"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <cylinder length="0.1" radius="0.045"/>
+        <cylinder length="0.05" radius="0.045"/>
       </geometry>
     </visual>
     <inertial>
@@ -315,7 +343,7 @@
       </plugin>
     </sensor>
   </gazebo>
-  <!--  <xacro:model_shelf name="first_shelf" 
+  <!--    <xacro:model_shelf name="first_shelf" 
                        parent="chassis"
                        height="0.15">
     </xacro:model_shelf>
@@ -323,13 +351,23 @@
     <xacro:model_shelf name="second_shelf" 
                        parent="first_shelf"
                        height="0.25">
-    </xacro:model_shelf>
-    -->
+    </xacro:model_shelf>-->
   <gazebo reference="base_link">
     </gazebo>
   <gazebo reference="ground">
     </gazebo>
-  <gazebo reference="sphere">
+  <gazebo reference="sphere1">
+    <gravity>true</gravity>
+    <material>Gazebo/Grey</material>
+    <mu1>0</mu1>
+    <mu2>0</mu2>
+    <kp>10000000</kp>
+    <kd>1</kd>
+    <fdir1>1 0 0</fdir1>
+    <minDepth>0.0001</minDepth>
+    <maxContacts>1</maxContacts>
+  </gazebo>
+  <gazebo reference="sphere2">
     <gravity>true</gravity>
     <material>Gazebo/Grey</material>
     <mu1>0</mu1>
@@ -353,8 +391,8 @@
       <alwaysOn>true</alwaysOn>
       <leftJoint>left_wheel_rot_joint</leftJoint>
       <rightJoint>right_wheel_rot_joint</rightJoint>
-      <wheelSeparation>0.32</wheelSeparation>
-      <wheelDiameter>0.14</wheelDiameter>
+      <wheelSeparation>0.28</wheelSeparation>
+      <wheelDiameter>0.06</wheelDiameter>
       <torque>20</torque>
       <wheelAcceleration>1.8</wheelAcceleration>
       <commandTopic>cmd_vel</commandTopic>

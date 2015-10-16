@@ -3,15 +3,15 @@
     <link name='base_link'>
       <pose>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>5.99819e-06 0 4.9985e-08 0 -0 0</pose>
+        <pose>1.39958e-05 0 6.49804e-08 0 -0 0</pose>
         <mass>10.003</mass>
         <inertia>
           <ixx>0.425054</ixx>
           <ixy>0</ixy>
-          <ixz>-7.2e-06</ixz>
-          <iyy>0.425037</iyy>
+          <ixz>-5.59999e-06</ixz>
+          <iyy>0.425033</iyy>
           <iyz>-4.08016e-18</iyz>
-          <izz>0.850074</izz>
+          <izz>0.850071</izz>
         </inertia>
       </inertial>
       <collision name='base_link_collision'>
@@ -33,16 +33,16 @@
         </geometry>
       </collision>
       <collision name='base_link_collision_base_link_2'>
-        <pose>-0.04 0.14 -0.02 -1.5708 0 0</pose>
+        <pose>0 0 0.065 0 -0 0</pose>
         <geometry>
           <cylinder>
-            <length>0.02</length>
-            <radius>0.0025</radius>
+            <length>0.05</length>
+            <radius>0.045</radius>
           </cylinder>
         </geometry>
       </collision>
       <collision name='base_link_collision_base_link_3'>
-        <pose>-0.04 -0.14 -0.02 -1.5708 0 0</pose>
+        <pose>0 0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -51,11 +51,12 @@
         </geometry>
       </collision>
       <collision name='base_link_collision_base_link_4'>
-        <pose>0 0 0.05 0 -0 0</pose>
+        <pose>0 -0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
-          <box>
-            <size>0.1 0.1 0.1</size>
-          </box>
+          <cylinder>
+            <length>0.02</length>
+            <radius>0.0025</radius>
+          </cylinder>
         </geometry>
       </collision>
       <visual name='base_link_visual'>
@@ -77,16 +78,16 @@
         </geometry>
       </visual>
       <visual name='base_link_visual_base_link_2'>
-        <pose>-0.04 0.14 -0.02 -1.5708 0 0</pose>
+        <pose>0 0 0.065 0 -0 0</pose>
         <geometry>
           <cylinder>
-            <length>0.02</length>
-            <radius>0.0025</radius>
+            <length>0.05</length>
+            <radius>0.045</radius>
           </cylinder>
         </geometry>
       </visual>
       <visual name='base_link_visual_base_link_3'>
-        <pose>-0.04 -0.14 -0.02 -1.5708 0 0</pose>
+        <pose>0 0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -95,11 +96,11 @@
         </geometry>
       </visual>
       <visual name='base_link_visual_base_link_4'>
-        <pose>0 0 0.05 0 -0 0</pose>
+        <pose>0 -0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
-            <length>0.1</length>
-            <radius>0.045</radius>
+            <length>0.02</length>
+            <radius>0.0025</radius>
           </cylinder>
         </geometry>
       </visual>
@@ -133,11 +134,11 @@
           <topicName>laser_scan</topicName>
           <frameName>hokuyo_laser_link</frameName>
         </plugin>
-        <pose>0 0 0.05 0 -0 0</pose>
+        <pose>0 0 0.065 0 -0 0</pose>
       </sensor>
     </link>
     <link name='left_wheel_link'>
-      <pose>-0.04 0.14 -0.02 0 -0 0</pose>
+      <pose>0 0.14 -0.02 0 -0 0</pose>
       <inertial>
         <pose>0 0.01 0 -1.5708 0 0</pose>
         <mass>0.5</mass>
@@ -213,7 +214,7 @@
       </axis>
     </joint>
     <link name='right_wheel_link'>
-      <pose>-0.04 -0.14 -0.02 0 -0 0</pose>
+      <pose>0 -0.14 -0.02 0 -0 0</pose>
       <inertial>
         <pose>0 0.01 0 -1.5708 0 0</pose>
         <mass>0.5</mass>
@@ -288,7 +289,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
-    <link name='sphere'>
+    <link name='sphere1'>
       <pose>0.14 0 -0.04 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
@@ -302,7 +303,7 @@
           <izz>0.0012</izz>
         </inertia>
       </inertial>
-      <collision name='sphere_collision'>
+      <collision name='sphere1_collision'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
@@ -327,7 +328,7 @@
           </friction>
         </surface>
       </collision>
-      <visual name='sphere_visual'>
+      <visual name='sphere1_visual'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
@@ -346,8 +347,84 @@
       <self_collide>0</self_collide>
       <gravity>1</gravity>
     </link>
-    <joint name='sphere_joint' type='revolute'>
-      <child>sphere</child>
+    <joint name='sphere_joint1' type='revolute'>
+      <child>sphere1</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>100</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='sphere2'>
+      <pose>-0.14 0 -0.04 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <mass>0.3</mass>
+        <inertia>
+          <ixx>0.0012</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0012</iyy>
+          <iyz>0</iyz>
+          <izz>0.0012</izz>
+        </inertia>
+      </inertial>
+      <collision name='sphere2_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.01</radius>
+          </sphere>
+        </geometry>
+        <max_contacts>1</max_contacts>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+07</kp>
+              <kd>1</kd>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='sphere2_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.01</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+      <gravity>1</gravity>
+    </link>
+    <joint name='sphere_joint2' type='revolute'>
+      <child>sphere2</child>
       <parent>base_link</parent>
       <axis>
         <xyz>0 0 1</xyz>
@@ -372,8 +449,8 @@
       <alwaysOn>true</alwaysOn>
       <leftJoint>left_wheel_rot_joint</leftJoint>
       <rightJoint>right_wheel_rot_joint</rightJoint>
-      <wheelSeparation>0.32</wheelSeparation>
-      <wheelDiameter>0.14</wheelDiameter>
+      <wheelSeparation>0.28</wheelSeparation>
+      <wheelDiameter>0.06</wheelDiameter>
       <torque>20</torque>
       <wheelAcceleration>1.8</wheelAcceleration>
       <commandTopic>cmd_vel</commandTopic>
