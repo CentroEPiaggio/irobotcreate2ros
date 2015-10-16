@@ -7,7 +7,18 @@
     </gazebo>
     <gazebo reference="ground">
     </gazebo>
-    <gazebo reference="sphere">
+    <gazebo reference="sphere1">
+      <gravity>true</gravity>
+      <material>Gazebo/Grey</material>
+      <mu1>0</mu1>
+      <mu2>0</mu2>
+      <kp>10000000</kp>
+      <kd>1</kd>
+      <fdir1>1 0 0</fdir1>
+      <minDepth>0.0001</minDepth>
+      <maxContacts>1</maxContacts>
+    </gazebo>
+    <gazebo reference="sphere2">
       <gravity>true</gravity>
       <material>Gazebo/Grey</material>
       <mu1>0</mu1>
@@ -32,8 +43,8 @@
         <alwaysOn>true</alwaysOn>
         <leftJoint>left_wheel_rot_joint</leftJoint>
         <rightJoint>right_wheel_rot_joint</rightJoint>
-        <wheelSeparation>0.32</wheelSeparation>
-        <wheelDiameter>0.14</wheelDiameter>
+        <wheelSeparation>0.28</wheelSeparation>
+        <wheelDiameter>0.06</wheelDiameter>
         <torque>20</torque>
         <wheelAcceleration>1.8</wheelAcceleration>
         <commandTopic>cmd_vel</commandTopic>
