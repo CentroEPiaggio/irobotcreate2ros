@@ -6,11 +6,6 @@
         <arg name="headless" default="false"/>
         <arg name="debug" default="false"/>
         <arg name="verbose" default="false"/>
-        <arg name="world_name" default="iRobot_worlds/one_iRobot_at_CP.world"/>
+        <arg name="world_name" default="iRobot_worlds/cp_with_furniture.world"/>
     </include>
-    
-   
-    <node name="laser_static_tf" pkg="tf" type="static_transform_publisher" args="0 0 0.05 0 0 0 /iRobot_0/base_link /iRobot_0/hokuyo_laser_link 500" />   
-    
 </launch>
-
