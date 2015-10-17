@@ -39,6 +39,9 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Joy.h>
 #include <geometry_msgs/Twist.h>
+#include "irobotcreate2/Note.h"
+#include "irobotcreate2/Song.h"
+#include "irobotcreate2/PlaySong.h"
 
 class joy_handler
 {
@@ -48,8 +51,10 @@ public:
 private:
   ros::NodeHandle nodeh;
   ros::Subscriber joy_sub;
-  ros::Publisher twist_pub;
+  ros::Publisher twist_pub, song_pub, playsong_pub;
   geometry_msgs::Twist twist;
+  irobotcreate2::Song song;
+  irobotcreate2::PlaySong play;
   bool dual_mode=true;
 
   void joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg);
