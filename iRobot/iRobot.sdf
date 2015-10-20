@@ -111,7 +111,7 @@
       <velocity_decay/>
       <self_collide>0</self_collide>
       <gravity>1</gravity>
-      <sensor name='head_hokuyo_sensor' type='ray'>
+      <sensor name='head_sensor' type='ray'>
         <visualize>1</visualize>
         <update_rate>40</update_rate>
         <ray>
@@ -119,8 +119,8 @@
             <horizontal>
               <samples>720</samples>
               <resolution>1</resolution>
-              <min_angle>-1.5708</min_angle>
-              <max_angle>1.5708</max_angle>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
             </horizontal>
           </scan>
           <range>
@@ -128,11 +128,16 @@
             <max>5</max>
             <resolution>0.01</resolution>
           </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.001</stddev>
+          </noise>
         </ray>
         <plugin name='gazebo_ros_head_hokuyo_controller' filename='libgazebo_ros_laser.so'>
           <robotNamespace/>
           <topicName>laser_scan</topicName>
-          <frameName>hokuyo_laser_link</frameName>
+          <frameName>laser_link</frameName>
         </plugin>
         <pose>0 0 0.065 0 -0 0</pose>
       </sensor>
