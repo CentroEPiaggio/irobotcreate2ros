@@ -38,8 +38,8 @@
 
 #include "joy_node.h"
 
-#define MAX_LIN_VEL 0.25
-#define MAX_ANG_VEL 1.0
+#define MAX_LIN_VEL 0.5
+#define MAX_ANG_VEL 0.5
 
 joy_handler::joy_handler()
 {
