@@ -144,7 +144,6 @@
         <topic>__default_topic__</topic>
         <imu/>
         <plugin name='imu_plugin' filename='libgazebo_ros_imu_sensor.so'>
-          <robotNamespace/>
           <topicName>imu_data</topicName>
           <bodyName>imu_sensor_link</bodyName>
           <updateRateHZ>1.0</updateRateHZ>
