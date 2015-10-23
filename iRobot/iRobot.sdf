@@ -407,14 +407,5 @@
       <updateRate>10.0</updateRate>
       <alwaysOn>true</alwaysOn>
     </plugin>
-    <plugin name='imu_plugin' filename='libgazebo_ros_imu.so'>
-      <bodyName>base_link</bodyName>
-      <updateRate>100.0</updateRate>
-      <topicName>imu_data</topicName>
-      <serviceName>imu_service</serviceName>
-      <gaussianNoise>0.1</gaussianNoise>
-      <xyzOffset>0 0 0</xyzOffset>
-      <rpyOffset>0 0 0</rpyOffset>
-    </plugin>
   </model>
 </sdf>
