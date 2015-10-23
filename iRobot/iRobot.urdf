@@ -334,8 +334,11 @@
         <box size="0.03 0.03 0.03"/>
       </geometry>
       <material>
-	      Gazebo/Red
-	    </material>
+        <script>
+          <name>Gazebo/Red</name>
+          <uri>__default__</uri>
+        </script>
+      </material>
     </visual>
     <inertial>
       <mass value="1e-5"/>
