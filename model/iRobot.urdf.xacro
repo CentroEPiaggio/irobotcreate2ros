@@ -8,6 +8,7 @@
   <xacro:include filename="$(find irobotcreate2)/model/shelf.urdf.xacro"/>
   <xacro:include filename="$(find irobotcreate2)/gazebo/iRobot.gazebo.xacro"/>
   <xacro:include filename="$(find irobotcreate2)/model/hokuyo.urdf.xacro"/>
+  <xacro:include filename="$(find irobotcreate2)/model/imu.urdf.xacro"/>
 
 
   <xacro:property name="pi" value="3.1415926535897931"/>
@@ -146,6 +147,11 @@
                   rpy="0 0 0"
                   parent="base_link">
     </xacro:hokuyo_laser>
+    
+    <xacro:imu_sensor xyz="-0.1 0 0.05" 
+                  rpy="0 0 0"
+                  parent="base_link">
+    </xacro:imu_sensor>
     
   <!--  <xacro:model_shelf name="first_shelf" 
                        parent="chassis"

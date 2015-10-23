@@ -3,15 +3,15 @@
     <link name='base_link'>
       <pose>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>5.99819e-06 0 4.9985e-08 0 -0 0</pose>
+        <pose>5.89822e-06 0 9.99698e-08 0 -0 0</pose>
         <mass>10.003</mass>
         <inertia>
-          <ixx>0.425054</ixx>
+          <ixx>0.425055</ixx>
           <ixy>0</ixy>
-          <ixz>-7.2e-06</ixz>
-          <iyy>0.425037</iyy>
+          <ixz>-7.14999e-06</ixz>
+          <iyy>0.425038</iyy>
           <iyz>-4.08016e-18</iyz>
-          <izz>0.850074</izz>
+          <izz>0.850075</izz>
         </inertia>
       </inertial>
       <collision name='base_link_collision'>
@@ -106,9 +106,7 @@
       <velocity_decay/>
       <velocity_decay/>
       <gravity>1</gravity>
-      <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
       <gravity>1</gravity>
       <sensor name='head_hokuyo_sensor' type='ray'>
         <visualize>1</visualize>
@@ -134,6 +132,27 @@
           <frameName>hokuyo_laser_link</frameName>
         </plugin>
         <pose>0 0 0.05 0 -0 0</pose>
+      </sensor>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+      <gravity>1</gravity>
+      <sensor name='imu_sensor' type='imu'>
+        <always_on>1</always_on>
+        <update_rate>1000</update_rate>
+        <visualize>1</visualize>
+        <topic>__default_topic__</topic>
+        <imu/>
+        <plugin name='imu_plugin' filename='libgazebo_ros_imu_sensor.so'>
+          <robotNamespace/>
+          <topicName>imu_data</topicName>
+          <bodyName>imu_sensor_link</bodyName>
+          <updateRateHZ>1.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+        </plugin>
+        <pose>-0.1 0 0.05 0 -0 0</pose>
       </sensor>
     </link>
     <link name='left_wheel_link'>
