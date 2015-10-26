@@ -3,15 +3,15 @@
     <link name='base_link'>
       <pose>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>5.89822e-06 0 9.99698e-08 0 -0 0</pose>
-        <mass>10.003</mass>
+        <pose>-3.9984e-06 0 5.04798e-06 0 -0 0</pose>
+        <mass>10.004</mass>
         <inertia>
-          <ixx>0.425055</ixx>
+          <ixx>0.425057</ixx>
           <ixy>0</ixy>
-          <ixz>-7.14999e-06</ixz>
-          <iyy>0.425038</iyy>
+          <ixz>-2.2002e-06</ixz>
+          <iyy>0.425049</iyy>
           <iyz>-4.08016e-18</iyz>
-          <izz>0.850075</izz>
+          <izz>0.850084</izz>
         </inertia>
       </inertial>
       <collision name='base_link_collision'>
@@ -58,6 +58,14 @@
           </box>
         </geometry>
       </collision>
+      <collision name='base_link_collision_base_link_5'>
+        <pose>-0.1 0 0.05 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.03</size>
+          </box>
+        </geometry>
+      </collision>
       <visual name='base_link_visual'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
@@ -101,6 +109,14 @@
             <length>0.1</length>
             <radius>0.045</radius>
           </cylinder>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_base_link_5'>
+        <pose>-0.1 0 0.05 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03 0.03 0.03</size>
+          </box>
         </geometry>
       </visual>
       <velocity_decay/>
