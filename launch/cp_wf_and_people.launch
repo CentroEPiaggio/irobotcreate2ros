@@ -8,6 +8,9 @@
         <arg name="headless" default="false"/>
         <arg name="debug" default="false"/>
         <arg name="verbose" default="false"/>
-        <arg name="world_name" default="iRobot_worlds/cp_with_furniture.world"/>
+        <arg name="world_name" default="iRobot_worlds/cp_wf_and_people.world"/>
     </include>
+    
+    <node name="person_controller" pkg="controller" type="person_node" />
+
 </launch>

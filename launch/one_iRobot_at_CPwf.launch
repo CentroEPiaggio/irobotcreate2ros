@@ -1,3 +1,5 @@
+<?xml version="1.0"?>
+
 <launch>
     <include file="$(find irobotcreate2)/launch/empty_world.launch">
         <arg name="paused" default="false"/>
@@ -8,4 +10,6 @@
         <arg name="verbose" default="false"/>
         <arg name="world_name" default="iRobot_worlds/one_iRobot_at_CPwf.world"/>
     </include>
+        
+    <node name="laser_static_tf" pkg="tf" type="static_transform_publisher" args="0 0 0.12 0 0 0 /iRobot/base_link /iRobot/laser_link 1000" />
 </launch>
