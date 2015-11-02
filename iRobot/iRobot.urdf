@@ -6,25 +6,37 @@
 <robot name="iRobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <!-- MODELS -->
   <material name="iRobot/Green">
-    <color rgba="0.0 0.6 0.0 1.0"/>
+    <color rgba="0.0 1.0 0.0 1.0"/>
   </material>
   <material name="iRobot/Yellow">
     <color rgba="1.0 1.0 0.0 1.0"/>
   </material>
-  <material name="iRobot/Blue">
-    <color rgba="0.0 0.5 1.0 1.0"/>
-  </material>
   <material name="iRobot/LightYellow">
     <color rgba="1.0 1.0 0.6 1.0"/>
   </material>
-  <material name="iRobot/Grey">
-    <color rgba="0.75 0.75 0.75 1.0"/>
+  <material name="iRobot/Blue">
+    <color rgba="0.0 0.0 1.0 1.0"/>
+  </material>
+  <material name="iRobot/LightBlue">
+    <color rgba="0.6 0.79 1.0 1.0"/>
+  </material>
+  <material name="iRobot/DarkGrey">
+    <color rgba="0.31 0.31 0.31 1.0"/>
+  </material>
+  <material name="iRobot/LightGrey">
+    <color rgba="0.83 0.83 0.83 1.0"/>
+  </material>
+  <material name="iRobot/MediumGrey">
+    <color rgba="0.5 0.5 0.5 1.0"/>
   </material>
   <material name="iRobot/Black">
     <color rgba="0.0 0.0 0.0 1.0"/>
   </material>
   <material name="iRobot/Red">
-    <color rgba="0.8 0.0 0.0 1.0"/>
+    <color rgba="1.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="iRobot/Orange">
+    <color rgba="1.0 0.65 0.0 1.0"/>
   </material>
   <link name="base_link">
     <inertial>
@@ -49,7 +61,7 @@
       <geometry>
         <cylinder length="0.08" radius="0.17"/>
       </geometry>
-      <material name="iRobot/LightYellow"/>
+      <material name="iRobot/LightGrey"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -74,7 +86,7 @@
       <geometry>
         <cylinder length="0.02" radius="0.0025"/>
       </geometry>
-      <material name="iRobot/Red"/>
+      <material name="iRobot/MediumGray"/>
     </visual>
     <collision>
       <origin rpy="-1.57079632679 0 0" xyz="0 0 0"/>
@@ -108,7 +120,7 @@
       <geometry>
         <cylinder length="0.02" radius="0.03"/>
       </geometry>
-      <material name="iRobot/Grey"/>
+      <material name="iRobot/Black"/>
     </visual>
     <collision>
       <origin rpy="-1.57079632679 0 0" xyz="0 0 0"/>
@@ -144,7 +156,7 @@
       <geometry>
         <cylinder length="0.02" radius="0.0025"/>
       </geometry>
-      <material name="iRobot/Red"/>
+      <material name="iRobot/MediumGray"/>
     </visual>
     <collision>
       <origin rpy="-1.57079632679 0 0" xyz="0 0 0"/>
@@ -178,7 +190,7 @@
       <geometry>
         <cylinder length="0.02" radius="0.03"/>
       </geometry>
-      <material name="iRobot/Grey"/>
+      <material name="iRobot/Black"/>
     </visual>
     <collision>
       <origin rpy="-1.57079632679 0 0" xyz="0 0 0"/>
@@ -216,7 +228,7 @@
       <geometry>
         <sphere radius="0.01"/>
       </geometry>
-      <material name="iRobot/Grey"/>
+      <material name="iRobot/Black"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -243,7 +255,7 @@
       <geometry>
         <sphere radius="0.01"/>
       </geometry>
-      <material name="iRobot/Grey"/>
+      <material name="iRobot/Black"/>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -252,62 +264,26 @@
       </geometry>
     </collision>
   </link>
-  <!--    <joint name="sphere_to_ground" type="fixed">
-        <origin xyz="0 0 -0.03" rpy="0 0 0"/>
-        <parent link="sphere"/>
-        <child link="ground"/>
-    </joint>
-    <link name="ground">
-        <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0"/>
-            <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
-        </inertial>
-    </link>-->
-  <joint name="base_front_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.14 0 0.04"/>
-    <parent link="chassis"/>
-    <child link="front_marker"/>
-  </joint>
-  <link name="front_marker">
-    <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.001"/>
-      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
-    </inertial>
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <cylinder length="0.01" radius="0.01"/>
-      </geometry>
-      <material name="iRobot/LightYellow"/>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <cylinder length="0.01" radius="0.01"/>
-      </geometry>
-    </collision>
-  </link>
-  <!-- Laser position: x y 0.025(laser height)+parent_height -->
+  <!-- Laser link and plugin -->
   <joint name="hokuyo_laser_joint" type="fixed">
     <axis xyz="0 0 1"/>
-    <origin rpy="0 0 0" xyz="0 0 0.065"/>
-    <parent link="chassis"/>
-    <child link="laser_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.06"/>
+    <parent link="base_link"/>
+    <child link="hokuyo_laser_link"/>
   </joint>
-  <link name="laser_link">
+  <link name="hokuyo_laser_link">
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <cylinder length="0.05" radius="0.045"/>
+        <cylinder length="0.04" radius="0.045"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <cylinder length="0.05" radius="0.045"/>
+        <cylinder length="0.04" radius="0.045"/>
       </geometry>
+      <material name="iRobot/LightBlue"/>
     </visual>
     <inertial>
       <mass value="1e-5"/>
@@ -315,9 +291,9 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
     </inertial>
   </link>
-  <gazebo reference="laser_link">
+  <gazebo reference="hokuyo_laser_link">
     <gravity>true</gravity>
-    <sensor name="head_sensor" type="ray">
+    <sensor name="head_hokuyo_sensor" type="ray">
       <pose>0 0 0 0 0 0</pose>
       <visualize>true</visualize>
       <update_rate>40</update_rate>
@@ -344,19 +320,127 @@
       <plugin filename="libgazebo_ros_laser.so" name="gazebo_ros_head_hokuyo_controller">
         <robotNamespace/>
         <topicName>laser_scan</topicName>
-        <frameName>laser_link</frameName>
+        <frameName>hokuyo_laser_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <!--Imu link and plugin-->
+  <joint name="imu_sensor_joint" type="fixed">
+    <axis xyz="0 0 1"/>
+    <origin rpy="0 0 0" xyz="-0.1 0 0.05"/>
+    <parent link="base_link"/>
+    <child link="imu_sensor_link"/>
+  </joint>
+  <link name="imu_sensor_link">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+      <material name="iRobot/Red"/>
+    </visual>
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.00000015" ixy="0" ixz="0" iyy="0.00000015" iyz="0" izz="0.00000015"/>
+    </inertial>
+  </link>
+  <gazebo reference="imu_sensor_link">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>1000</update_rate>
+      <visualize>1</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_data</topicName>
+        <bodyName>imu_sensor_link</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+  <!--Camera link and plugin-->
+  <joint name="camera_sensor_joint" type="fixed">
+    <axis xyz="0 1 0"/>
+    <origin rpy="0 0 0" xyz="0 0 0.1"/>
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+  </joint>
+  <link name="camera_link">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.08 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.08 0.05"/>
+      </geometry>
+      <material name="iRobot/Green"/>
+    </visual>
+    <inertial>
+      <mass value="0.0001"/>
+      <origin rpy="0 0 3.14159265359" xyz="0 0 0"/>
+      <inertia ixx="0.0000001" ixy="0" ixz="0" iyy="0.0000001" iyz="0" izz="0.0000001"/>
+    </inertial>
+  </link>
+  <gazebo reference="camera_link">
+    <sensor name="camera" type="camera">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>600</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_controller">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>iRobot/camera</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
       </plugin>
     </sensor>
   </gazebo>
   <!--    <xacro:model_shelf name="first_shelf" 
                        parent="chassis"
                        height="0.15">
-    </xacro:model_shelf>
-    
-    <xacro:model_shelf name="second_shelf" 
+    </xacro:model_shelf>-->
+  <!--    <xacro:model_shelf name="second_shelf" 
                        parent="first_shelf"
                        height="0.25">
-    </xacro:model_shelf>-->
+    </xacro:model_shelf>
+    -->
   <gazebo reference="base_link">
     </gazebo>
   <gazebo reference="ground">

@@ -3,15 +3,15 @@
     <link name='base_link'>
       <pose>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>1.39958e-05 0 6.49804e-08 0 -0 0</pose>
-        <mass>10.003</mass>
+        <pose>-9.99689e-06 0 2.05936e-06 0 -0 0</pose>
+        <mass>10.0031</mass>
         <inertia>
-          <ixx>0.425054</ixx>
+          <ixx>0.425046</ixx>
           <ixy>0</ixy>
-          <ixz>-5.59999e-06</ixz>
-          <iyy>0.425033</iyy>
+          <ixz>4.99979e-06</ixz>
+          <iyy>0.425016</iyy>
           <iyz>-4.08016e-18</iyz>
-          <izz>0.850071</izz>
+          <izz>0.850052</izz>
         </inertia>
       </inertial>
       <collision name='base_link_collision'>
@@ -24,24 +24,6 @@
         </geometry>
       </collision>
       <collision name='base_link_collision_base_link_1'>
-        <pose>0.14 0 0.04 0 -0 0</pose>
-        <geometry>
-          <cylinder>
-            <length>0.01</length>
-            <radius>0.01</radius>
-          </cylinder>
-        </geometry>
-      </collision>
-      <collision name='base_link_collision_base_link_2'>
-        <pose>0 0 0.065 0 -0 0</pose>
-        <geometry>
-          <cylinder>
-            <length>0.05</length>
-            <radius>0.045</radius>
-          </cylinder>
-        </geometry>
-      </collision>
-      <collision name='base_link_collision_base_link_3'>
         <pose>0 0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
@@ -50,13 +32,38 @@
           </cylinder>
         </geometry>
       </collision>
-      <collision name='base_link_collision_base_link_4'>
+      <collision name='base_link_collision_base_link_2'>
         <pose>0 -0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
             <radius>0.0025</radius>
           </cylinder>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_base_link_3'>
+        <pose>0 0 0.1 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.02 0.08 0.05</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_base_link_4'>
+        <pose>0 0 0.06 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.04</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_base_link_5'>
+        <pose>-0.1 0 0.05 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.02 0.02 0.02</size>
+          </box>
         </geometry>
       </collision>
       <visual name='base_link_visual'>
@@ -69,24 +76,6 @@
         </geometry>
       </visual>
       <visual name='base_link_visual_base_link_1'>
-        <pose>0.14 0 0.04 0 -0 0</pose>
-        <geometry>
-          <cylinder>
-            <length>0.01</length>
-            <radius>0.01</radius>
-          </cylinder>
-        </geometry>
-      </visual>
-      <visual name='base_link_visual_base_link_2'>
-        <pose>0 0 0.065 0 -0 0</pose>
-        <geometry>
-          <cylinder>
-            <length>0.05</length>
-            <radius>0.045</radius>
-          </cylinder>
-        </geometry>
-      </visual>
-      <visual name='base_link_visual_base_link_3'>
         <pose>0 0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
@@ -95,7 +84,7 @@
           </cylinder>
         </geometry>
       </visual>
-      <visual name='base_link_visual_base_link_4'>
+      <visual name='base_link_visual_base_link_2'>
         <pose>0 -0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
@@ -104,14 +93,73 @@
           </cylinder>
         </geometry>
       </visual>
+      <visual name='base_link_visual_base_link_3'>
+        <pose>0 0 0.1 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.02 0.08 0.05</size>
+          </box>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_base_link_4'>
+        <pose>0 0 0.06 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.04</length>
+            <radius>0.045</radius>
+          </cylinder>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_base_link_5'>
+        <pose>-0.1 0 0.05 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.02 0.02 0.02</size>
+          </box>
+        </geometry>
+      </visual>
       <velocity_decay/>
       <velocity_decay/>
-      <gravity>1</gravity>
+      <velocity_decay/>
+      <sensor name='camera' type='camera'>
+        <update_rate>30</update_rate>
+        <camera name='head'>
+          <horizontal_fov>1.39626</horizontal_fov>
+          <image>
+            <width>800</width>
+            <height>600</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>iRobot/camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera_link</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+        <pose>0 0 0.1 0 -0 0</pose>
+      </sensor>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
       <gravity>1</gravity>
-      <sensor name='head_sensor' type='ray'>
+      <sensor name='head_hokuyo_sensor' type='ray'>
         <visualize>1</visualize>
         <update_rate>40</update_rate>
         <ray>
@@ -137,9 +185,28 @@
         <plugin name='gazebo_ros_head_hokuyo_controller' filename='libgazebo_ros_laser.so'>
           <robotNamespace/>
           <topicName>laser_scan</topicName>
-          <frameName>laser_link</frameName>
+          <frameName>hokuyo_laser_link</frameName>
         </plugin>
-        <pose>0 0 0.065 0 -0 0</pose>
+        <pose>0 0 0.06 0 -0 0</pose>
+      </sensor>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+      <gravity>1</gravity>
+      <sensor name='imu_sensor' type='imu'>
+        <always_on>1</always_on>
+        <update_rate>1000</update_rate>
+        <visualize>1</visualize>
+        <topic>__default_topic__</topic>
+        <plugin name='imu_plugin' filename='libgazebo_ros_imu_sensor.so'>
+          <topicName>imu_data</topicName>
+          <bodyName>imu_sensor_link</bodyName>
+          <updateRateHZ>10.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+        </plugin>
+        <pose>-0.1 0 0.05 0 -0 0</pose>
       </sensor>
     </link>
     <link name='left_wheel_link'>

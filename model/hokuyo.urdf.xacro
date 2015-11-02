@@ -6,21 +6,22 @@
         <axis xyz="0 0 1" />
         <origin xyz="${xyz}" rpy="${rpy}"/>
         <parent link="${parent}"/>
-        <child link="laser_link"/>
+        <child link="hokuyo_laser_link"/>
     </joint>
      
-    <link name="laser_link">
+    <link name="hokuyo_laser_link">
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="0.05" radius="0.045"/>
+                <cylinder length="0.04" radius="0.045"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="0.05" radius="0.045"/>
+                <cylinder length="0.04" radius="0.045"/>
             </geometry>
+            <material name="iRobot/LightBlue"/>
         </visual>
         <inertial>
             <mass value="1e-5" />
@@ -29,9 +30,9 @@
         </inertial>
     </link>
     
-    <gazebo reference="laser_link">
+    <gazebo reference="hokuyo_laser_link">
         <gravity>true</gravity>
-        <sensor type="ray" name="head_sensor">
+        <sensor type="ray" name="head_hokuyo_sensor">
             <pose>0 0 0 0 0 0</pose>
             <visualize>true</visualize>
             <update_rate>40</update_rate>
@@ -58,7 +59,7 @@
             <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
                 <robotNamespace></robotNamespace>
                 <topicName>laser_scan</topicName>
-                <frameName>laser_link</frameName>
+                <frameName>hokuyo_laser_link</frameName>
             </plugin>      
         </sensor>
     </gazebo>
