@@ -62,6 +62,9 @@ add_dependencies(irobotcreate2 irobotcreate2_gencpp)
 add_executable(joy_node src/joy_node.cpp)
 add_dependencies(joy_node irobotcreate2_generate_messages_cpp)
 
+add_executable(keyboard_node src/keyboard_node.cpp)
+add_dependencies(keyboard_node irobotcreate2_generate_messages_cpp)
+
 add_executable(basic_commands src/irobotcreate2/OpenInterface.cpp src/basic_commands.cpp)
 
 target_link_libraries(irobotcreate2_lightweight ${catkin_LIBRARIES})
@@ -71,3 +74,5 @@ target_link_libraries(irobotcreate2 ${catkin_LIBRARIES})
 target_link_libraries(basic_commands ${catkin_LIBRARIES})
 
 target_link_libraries(joy_node ${catkin_LIBRARIES})
+
+target_link_libraries(keyboard_node ${catkin_LIBRARIES})
