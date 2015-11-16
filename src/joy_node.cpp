@@ -45,6 +45,8 @@ joy_handler::joy_handler()
 {
     joy_sub  = nodeh.subscribe<sensor_msgs::Joy>("/joy", 1, &joy_handler::joy_receive, this);
     twist_pub = nodeh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
+    song_pub = nodeh.advertise<irobotcreate2::Song>("/song", 1);
+    playsong_pub = nodeh.advertise<irobotcreate2::PlaySong>("/play_song", 1);
 
     twist.linear.x=0;
     twist.linear.y=0;
@@ -68,6 +70,24 @@ void joy_handler::joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg)
     }
     
     if(joy_msg->buttons.at(0)) dual_mode=!(dual_mode);
+
+    if(joy_msg->buttons.at(14))
+    {
+	song.notes.clear();
+	song.song_number = 0;
+	irobotcreate2::Note note;
+	note.note = 64;
+	note.length = 40;
+	song.notes.push_back(note);
+	note.note = 16;
+	note.length = 3;
+	song.notes.push_back(note);
+	song_pub.publish(song);
+
+	usleep(10000);
+	play.song_number=0;
+	playsong_pub.publish(play);
+    }
 
     twist_pub.publish(twist);
 }

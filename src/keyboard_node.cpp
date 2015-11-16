@@ -34,28 +34,106 @@
 *
 * Author: Alessandro Settimi 2015
 * Author: Mirko Ferrati 2015
+* 
 *********************************************************************/
 
-#include <ros/ros.h>
-#include <sensor_msgs/Joy.h>
-#include <geometry_msgs/Twist.h>
-#include "irobotcreate2/Note.h"
-#include "irobotcreate2/Song.h"
-#include "irobotcreate2/PlaySong.h"
+#include "keyboard_node.h"
 
-class joy_handler
+#define MAX_LIN_VEL 0.1
+#define MAX_ANG_VEL 1.0
+
+int kfd = 0;
+struct termios cooked, raw;
+
+keyboard_handler::keyboard_handler()
 {
-public:
-  joy_handler();
-  ~joy_handler();
-private:
-  ros::NodeHandle nodeh;
-  ros::Subscriber joy_sub;
-  ros::Publisher twist_pub, song_pub, playsong_pub;
-  geometry_msgs::Twist twist;
-  irobotcreate2::Song song;
-  irobotcreate2::PlaySong play;
-  bool dual_mode=true;
+    twist_pub = nodeh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
 
-  void joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg);
-};
+    twist.linear.x=0;
+    twist.linear.y=0;
+    twist.linear.z=0;
+    twist.angular.x=0;
+    twist.angular.y=0;
+    twist.angular.z=0;
+}
+
+void keyboard_handler::keyboard_reading()
+{
+    char c;
+
+    // get the console in raw mode                                                              
+    tcgetattr(kfd, &cooked);
+    memcpy(&raw, &cooked, sizeof(struct termios));
+    raw.c_lflag &=~ (ICANON | ECHO);
+    // Setting a new line, then end of file                         
+    raw.c_cc[VEOL] = 1;
+    raw.c_cc[VEOF] = 2;
+    tcsetattr(kfd, TCSANOW, &raw);
+
+    ROS_INFO("Use arrow keys to move the robot.");
+
+    while(1)
+    {
+	if(read(kfd, &c, 1) < 0)
+	{
+	    ROS_ERROR("Something wrong!");
+	    exit(-1);
+	}
+
+	twist.linear.x = 0;
+	twist.angular.z = 0;
+
+	switch(c)
+	{
+	    case LEFT:
+		twist.angular.z = MAX_ANG_VEL;
+		break;
+	    case RIGHT:
+		twist.angular.z = -MAX_ANG_VEL;
+		break;
+	    case FORWARD:
+		twist.linear.x = MAX_LIN_VEL;
+		break;
+	    case BACKWARD:
+		twist.linear.x = -MAX_LIN_VEL;
+		break;
+	    case STOP:
+		twist.linear.x = 0;
+		twist.angular.z = 0;
+	    break;
+	}
+
+	twist_pub.publish(twist);    
+ 
+	ros::spinOnce();
+
+	usleep(100);
+    }    
+}
+
+keyboard_handler::~keyboard_handler()
+{
+
+}
+
+void quit(int sig)
+{
+    tcsetattr(kfd, TCSANOW, &cooked);
+    ros::shutdown();
+    exit(0);
+}
+
+int main(int argc, char** argv)
+{
+    ros::init(argc, argv, "keyboard_node");
+
+    keyboard_handler keyboard_h;
+
+    ROS_INFO("Keyboard Handler Started");
+
+    signal(SIGINT,quit);
+
+    keyboard_h.keyboard_reading();
+
+    return 0;
+}
