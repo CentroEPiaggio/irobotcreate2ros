@@ -141,6 +141,8 @@ void playSongReceived(const irobotcreate2::PlaySong::ConstPtr& song)
 
 int main(int argc, char** argv)
 {
+	bool desired_mode_full=false; //if false go in safe_mode
+
 	ros::init(argc, argv, "roomba560_node");
 
 	ROS_INFO("Roomba for ROS %.2f", NODE_VERSION);
@@ -374,7 +376,12 @@ int main(int argc, char** argv)
 		ros::spinOnce();
 		r.sleep();
 		
-		if(first_loop) {roomba->startOI(true); first_loop=false;}
+		if(first_loop)
+		{
+		    roomba->startOI(true);
+		    if(!desired_mode_full) roomba->Safe();
+		    first_loop=false;
+		}
 	}
 	
 	roomba->powerDown();
