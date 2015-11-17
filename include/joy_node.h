@@ -42,6 +42,7 @@
 #include "irobotcreate2/Note.h"
 #include "irobotcreate2/Song.h"
 #include "irobotcreate2/PlaySong.h"
+#include <std_msgs/String.h>
 
 class joy_handler
 {
@@ -52,6 +53,7 @@ private:
   ros::NodeHandle nodeh;
   ros::Subscriber joy_sub;
   ros::Publisher twist_pub, song_pub, playsong_pub;
+  ros::Publisher saver;
   geometry_msgs::Twist twist;
   irobotcreate2::Song song;
   irobotcreate2::PlaySong play;
