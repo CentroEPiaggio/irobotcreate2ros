@@ -162,26 +162,39 @@ int main(int argc, char** argv)
 	std::string odom_frame_id;
 	pn.param<std::string>("base_frame_id", base_frame_id, "base_link");
 	pn.param<std::string>("odom_frame_id", odom_frame_id, "odom");
-	
+
+	std::string robot_base_name;
+	int robot_id;
+	std::string robot_name;
+	std::string name_space = "";
+	pn.param<std::string>("base_name_", robot_base_name, "");
+
+	if(robot_base_name!="")
+	{
+	    pn.param<int>("id_", robot_id, 0);
+	    robot_name = robot_base_name + std::to_string(robot_id);
+	    name_space = "/" + robot_name;
+	}
+
 	roomba = new irobot::OpenInterface(port.c_str());
 
-	ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("/odom", 50);
-    ros::Publisher battery_pub = n.advertise<irobotcreate2::Battery>("/battery", 50);
-    ros::Publisher bumper_pub = n.advertise<irobotcreate2::Bumper>("/bumper", 50);
-    ros::Publisher buttons_pub = n.advertise<irobotcreate2::Buttons>("/buttons", 50);
-    ros::Publisher cliff_pub = n.advertise<irobotcreate2::RoombaIR>("/cliff", 50);
-    ros::Publisher irbumper_pub = n.advertise<irobotcreate2::RoombaIR>("/ir_bumper", 50);
-    ros::Publisher irchar_pub = n.advertise<irobotcreate2::IRCharacter>("/ir_character", 50);
-    ros::Publisher wheeldrop_pub = n.advertise<irobotcreate2::WheelDrop>("/wheel_drop", 50);
+	ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>(name_space+"/odom", 50);
+    ros::Publisher battery_pub = n.advertise<irobotcreate2::Battery>(name_space+"/battery", 50);
+    ros::Publisher bumper_pub = n.advertise<irobotcreate2::Bumper>(name_space+"/bumper", 50);
+    ros::Publisher buttons_pub = n.advertise<irobotcreate2::Buttons>(name_space+"/buttons", 50);
+    ros::Publisher cliff_pub = n.advertise<irobotcreate2::RoombaIR>(name_space+"/cliff", 50);
+    ros::Publisher irbumper_pub = n.advertise<irobotcreate2::RoombaIR>(name_space+"/ir_bumper", 50);
+    ros::Publisher irchar_pub = n.advertise<irobotcreate2::IRCharacter>(name_space+"/ir_character", 50);
+    ros::Publisher wheeldrop_pub = n.advertise<irobotcreate2::WheelDrop>(name_space+"/wheel_drop", 50);
 
 	tf::TransformBroadcaster tf_broadcaster;
 	
-	ros::Subscriber cmd_vel_sub  = n.subscribe<geometry_msgs::Twist>("/cmd_vel", 1, cmdVelReceived);
-    ros::Subscriber leds_sub  = n.subscribe<irobotcreate2::Leds>("/leds", 1, ledsReceived);
-    ros::Subscriber digitleds_sub  = n.subscribe<irobotcreate2::DigitLeds>("/digit_leds", 1, digitLedsReceived);
-    ros::Subscriber song_sub  = n.subscribe<irobotcreate2::Song>("/song", 1, songReceived);
-    ros::Subscriber playsong_sub  = n.subscribe<irobotcreate2::PlaySong>("/play_song", 1, playSongReceived);
-    ros::Subscriber mode_sub  = n.subscribe<std_msgs::String>("/mode", 1, cmdModeReceived);
+	ros::Subscriber cmd_vel_sub  = n.subscribe<geometry_msgs::Twist>(name_space+"/cmd_vel", 1, cmdVelReceived);
+    ros::Subscriber leds_sub  = n.subscribe<irobotcreate2::Leds>(name_space+"/leds", 1, ledsReceived);
+    ros::Subscriber digitleds_sub  = n.subscribe<irobotcreate2::DigitLeds>(name_space+"/digit_leds", 1, digitLedsReceived);
+    ros::Subscriber song_sub  = n.subscribe<irobotcreate2::Song>(name_space+"/song", 1, songReceived);
+    ros::Subscriber playsong_sub  = n.subscribe<irobotcreate2::PlaySong>(name_space+"/play_song", 1, playSongReceived);
+    ros::Subscriber mode_sub  = n.subscribe<std_msgs::String>(name_space+"/mode", 1, cmdModeReceived);
 	
 	irobot::OI_Packet_ID sensor_packets[1] = {irobot::OI_PACKET_GROUP_100};
 	roomba->setSensorPackets(sensor_packets, 1, OI_PACKET_GROUP_100_SIZE);
