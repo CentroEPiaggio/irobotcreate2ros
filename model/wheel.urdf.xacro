@@ -25,7 +25,7 @@
             <geometry>
                 <cylinder length="${width}" radius="${radius}"/>
             </geometry>
-            <material name="iRobot/Grey"/>
+            <material name="iRobot/Black"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="${-pi/2} 0 0"/>

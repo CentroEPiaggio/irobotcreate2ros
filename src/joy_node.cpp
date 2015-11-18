@@ -38,8 +38,8 @@
 
 #include "joy_node.h"
 
-#define MAX_LIN_VEL 0.25
-#define MAX_ANG_VEL 1.0
+#define MAX_LIN_VEL 0.2
+#define MAX_ANG_VEL 0.5
 
 joy_handler::joy_handler()
 {
@@ -47,6 +47,7 @@ joy_handler::joy_handler()
     twist_pub = nodeh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
     song_pub = nodeh.advertise<irobotcreate2::Song>("/song", 1);
     playsong_pub = nodeh.advertise<irobotcreate2::PlaySong>("/play_song", 1);
+    saver = nodeh.advertise<std_msgs::String>("/syscommand", 1);
 
     twist.linear.x=0;
     twist.linear.y=0;
@@ -60,35 +61,43 @@ void joy_handler::joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg)
 {
     if(dual_mode)
     {
-	twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(1);
-	twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(2);
+        twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(1);
+        twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(2);
     }
     else
     {
-	twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(1);
-	twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(0);
+        twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(1);
+        twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(0);
     }
     
     if(joy_msg->buttons.at(0)) dual_mode=!(dual_mode);
 
     if(joy_msg->buttons.at(14))
     {
-	song.notes.clear();
-	song.song_number = 0;
-	irobotcreate2::Note note;
-	note.note = 64;
-	note.length = 40;
-	song.notes.push_back(note);
-	note.note = 16;
-	note.length = 3;
-	song.notes.push_back(note);
-	song_pub.publish(song);
+        song.notes.clear();
+        song.song_number = 0;
+        irobotcreate2::Note note;
+        note.note = 64;
+        note.length = 40;
+        song.notes.push_back(note);
+        note.note = 16;
+        note.length = 3;
+        song.notes.push_back(note);
+        song_pub.publish(song);
 
-	usleep(10000);
-	play.song_number=0;
-	playsong_pub.publish(play);
+        usleep(10000);
+        play.song_number=0;
+        playsong_pub.publish(play);
     }
-
+    
+    if(joy_msg->buttons.at(13)) 
+    {
+        std_msgs::String mess;
+        mess.data = "save_image";
+        saver.publish(mess);
+        ros::Duration(0.3).sleep();
+    }
+    
     twist_pub.publish(twist);
 }
 

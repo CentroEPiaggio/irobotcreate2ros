@@ -13,14 +13,15 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <box size="0.1 0.1 0.1"/>
+                <cylinder length="0.04" radius="0.045"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="0.1" radius="0.045"/>
+                <cylinder length="0.04" radius="0.045"/>
             </geometry>
+            <material name="iRobot/LightBlue"/>
         </visual>
         <inertial>
             <mass value="1e-5" />
@@ -38,17 +39,22 @@
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>720</samples>
+                        <samples>360</samples>
                         <resolution>1</resolution>
-                        <min_angle>-1.570796</min_angle>
-                        <max_angle>1.570796</max_angle>
+                        <min_angle>-3.14159</min_angle>
+                        <max_angle>3.14159</max_angle>
                     </horizontal>
                 </scan>
                 <range>
-                    <min>0.08</min>
-                    <max>5</max>
-                    <resolution>0.01</resolution>
+                    <min>0.2</min>
+                    <max>40</max>
+                    <resolution>0.025</resolution>
                 </range>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.0</stddev>
+                </noise>
             </ray>
             <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
                 <robotNamespace></robotNamespace>

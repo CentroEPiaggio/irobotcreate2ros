@@ -1,3 +1,5 @@
+<?xml version="1.0"?>
+
 <launch>
     <node name="irobot" pkg="irobotcreate2" type="irobotcreate2"/>
     <node name="joy" pkg="irobotcreate2" type="joy_node"/>

@@ -8,6 +8,8 @@
   <xacro:include filename="$(find irobotcreate2)/model/shelf.urdf.xacro"/>
   <xacro:include filename="$(find irobotcreate2)/gazebo/iRobot.gazebo.xacro"/>
   <xacro:include filename="$(find irobotcreate2)/model/hokuyo.urdf.xacro"/>
+  <xacro:include filename="$(find irobotcreate2)/model/imu.urdf.xacro"/>
+  <xacro:include filename="$(find irobotcreate2)/model/camera.urdf.xacro"/>
 
 
   <xacro:property name="pi" value="3.1415926535897931"/>
@@ -37,7 +39,7 @@
             <geometry>
                 <cylinder length="0.08" radius="0.17"/>
             </geometry>
-            <material name="iRobot/LightYellow"/>
+            <material name="iRobot/LightGrey"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -49,7 +51,7 @@
 
     <xacro:model_axis name="left_axis" 
                       parent="chassis">
-    <origin xyz="-0.04 0.14 -0.02" rpy="0 0 0"/>
+    <origin xyz="0 0.14 -0.02" rpy="0 0 0"/>
     </xacro:model_axis>
     
    <xacro:model_wheel name="left_wheel" 
@@ -62,7 +64,7 @@
     
     <xacro:model_axis name="right_axis" 
                       parent="chassis">
-    <origin xyz="-0.04 -0.14 -0.02" rpy="0 0 0"/>
+    <origin xyz="0 -0.14 -0.02" rpy="0 0 0"/>
     </xacro:model_axis>
     
     <xacro:model_wheel name="right_wheel" 
@@ -73,14 +75,14 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
     </xacro:model_wheel>
     
-    <joint name="sphere_joint" type="revolute">
+    <joint name="sphere_joint1" type="revolute">
         <origin xyz="0.14 0 -0.04" rpy="0 0 0"/>
         <axis xyz="0 0 1"/>
         <limit lower="0" upper="0" effort="100" velocity="100"/>
         <parent link="chassis"/>
-        <child link="sphere"/>
+        <child link="sphere1"/>
     </joint>
-    <link name="sphere">
+    <link name="sphere1">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="${sphere_mass}"/>
@@ -91,7 +93,7 @@
             <geometry>
                 <sphere radius="0.01"/>
             </geometry>
-            <material name="iRobot/Grey"/>
+            <material name="iRobot/Black"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -101,58 +103,59 @@
         </collision>
     </link>
     
-<!--    <joint name="sphere_to_ground" type="fixed">
-        <origin xyz="0 0 -0.03" rpy="0 0 0"/>
-        <parent link="sphere"/>
-        <child link="ground"/>
-    </joint>
-    <link name="ground">
-        <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0"/>
-            <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
-        </inertial>
-    </link>-->
-
-    
-    <joint name="base_front_joint" type="fixed">
-        <origin xyz="0.14 0 0.04" rpy="0 0 0"/>
+    <joint name="sphere_joint2" type="revolute">
+        <origin xyz="-0.14 0 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="0" upper="0" effort="100" velocity="100"/>
         <parent link="chassis"/>
-        <child link="front_marker"/>
+        <child link="sphere2"/>
     </joint>
-    <link name="front_marker">
+    <link name="sphere2">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0.001"/>
-            <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
+            <mass value="${sphere_mass}"/>
+            <inertia ixx="${2/5*sphere_mass*0.01^2}" ixy="0.0" ixz="0.0" iyy="${2/5*sphere_mass*0.01^2}" iyz="0.0" izz="${2/5*sphere_mass*0.01^2}"/>
         </inertial>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="0.01" radius="0.01"/>
+                <sphere radius="0.01"/>
             </geometry>
-            <material name="iRobot/LightYellow"/>
+            <material name="iRobot/Black"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <cylinder length="0.01" radius="0.01"/>
+                <sphere radius="0.01"/>
             </geometry>
         </collision>
     </link>
     
     
-    <xacro:hokuyo_laser xyz="0 0 0.05" 
+    <!-- Laser link and plugin -->
+    <xacro:hokuyo_laser xyz="0 0 ${0.04 + 0.02}" 
                   rpy="0 0 0"
                   parent="base_link">
     </xacro:hokuyo_laser>
     
-  <!--  <xacro:model_shelf name="first_shelf" 
+    <!--Imu link and plugin-->
+    <xacro:imu_sensor xyz="-0.1 0 ${0.04 + 0.01}" 
+                  rpy="0 0 0"
+                  parent="base_link">
+    </xacro:imu_sensor>
+    
+    <!--Camera link and plugin-->
+    <xacro:camera_sensor xyz="0 0 ${0.04 + 0.02 + 0.04}" 
+                  rpy="0 0 0"
+                  parent="base_link">
+    </xacro:camera_sensor>
+    
+<!--    <xacro:model_shelf name="first_shelf" 
                        parent="chassis"
                        height="0.15">
-    </xacro:model_shelf>
+    </xacro:model_shelf>-->
     
-    <xacro:model_shelf name="second_shelf" 
+<!--    <xacro:model_shelf name="second_shelf" 
                        parent="first_shelf"
                        height="0.25">
     </xacro:model_shelf>
