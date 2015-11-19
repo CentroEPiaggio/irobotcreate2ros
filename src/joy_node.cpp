@@ -55,6 +55,24 @@ joy_handler::joy_handler()
     twist.angular.x=0;
     twist.angular.y=0;
     twist.angular.z=0;
+
+    selection_sub = nodeh.subscribe("/agent_selection",10,&joy_handler::agent_selection_callback,this);
+}
+
+void joy_handler::change_topics(std::string ns)
+{
+    if(ns!="") ns="/"+ns;
+
+    twist_pub = nodeh.advertise<geometry_msgs::Twist>(ns+"/cmd_vel", 1);
+    song_pub = nodeh.advertise<irobotcreate2::Song>(ns+"/song", 1);
+    playsong_pub = nodeh.advertise<irobotcreate2::PlaySong>(ns+"/play_song", 1);
+    saver = nodeh.advertise<std_msgs::String>("/syscommand", 1);
+}
+
+void joy_handler::agent_selection_callback(const std_msgs::String& msg)
+{
+    if(msg.data == "All") change_topics("");
+    else change_topics(msg.data);
 }
 
 void joy_handler::joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg)

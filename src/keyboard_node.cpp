@@ -48,6 +48,7 @@ struct termios cooked, raw;
 keyboard_handler::keyboard_handler()
 {
     twist_pub = nodeh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
+    selection_sub = nodeh.subscribe("/agent_selection",10,&keyboard_handler::agent_selection_callback,this);
 
     twist.linear.x=0;
     twist.linear.y=0;
@@ -55,6 +56,12 @@ keyboard_handler::keyboard_handler()
     twist.angular.x=0;
     twist.angular.y=0;
     twist.angular.z=0;
+}
+
+void keyboard_handler::agent_selection_callback(const std_msgs::String& msg)
+{
+    if(msg.data == "All") twist_pub = nodeh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
+    else twist_pub = nodeh.advertise<geometry_msgs::Twist>("/"+msg.data+"/cmd_vel", 1);
 }
 
 void keyboard_handler::keyboard_reading()

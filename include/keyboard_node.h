@@ -48,6 +48,7 @@
 #define STOP 0x20
 
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/String.h>
 
 class keyboard_handler
 {
@@ -56,7 +57,10 @@ public:
   void keyboard_reading();
   ~keyboard_handler();
 private:
+  void agent_selection_callback(const std_msgs::String& msg);
+
   ros::NodeHandle nodeh;
   ros::Publisher twist_pub;
+  ros::Subscriber selection_sub;
   geometry_msgs::Twist twist;
 };

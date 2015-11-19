@@ -60,4 +60,7 @@ private:
   bool dual_mode=true;
 
   void joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg);
+  void agent_selection_callback(const std_msgs::String& msg);
+  ros::Subscriber selection_sub;
+  void change_topics(std::string ns);
 };
