@@ -48,6 +48,7 @@ joy_handler::joy_handler()
     song_pub = nodeh.advertise<irobotcreate2::Song>("/song", 1);
     playsong_pub = nodeh.advertise<irobotcreate2::PlaySong>("/play_song", 1);
     saver = nodeh.advertise<std_msgs::String>("/syscommand", 1);
+    mode_pub = nodeh.advertise<std_msgs::String>("/mode", 1);
 
     twist.linear.x=0;
     twist.linear.y=0;
@@ -67,6 +68,7 @@ void joy_handler::change_topics(std::string ns)
     song_pub = nodeh.advertise<irobotcreate2::Song>(ns+"/song", 1);
     playsong_pub = nodeh.advertise<irobotcreate2::PlaySong>(ns+"/play_song", 1);
     saver = nodeh.advertise<std_msgs::String>("/syscommand", 1);
+    mode_pub = nodeh.advertise<geometry_msgs::Twist>(ns+"/mode", 1);
 }
 
 void joy_handler::agent_selection_callback(const std_msgs::String& msg)
@@ -79,18 +81,24 @@ void joy_handler::joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg)
 {
     if(dual_mode)
     {
-        twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(1);
-        twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(2);
+        twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(LEFT_X_AXIS);
+        twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(RIGHT_Y_AXIS);
     }
     else
     {
-        twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(1);
-        twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(0);
+        twist.linear.x = MAX_LIN_VEL*joy_msg->axes.at(LEFT_X_AXIS);
+        twist.angular.z = MAX_ANG_VEL*joy_msg->axes.at(LEFT_Y_AXIS);
     }
     
-    if(joy_msg->buttons.at(0)) dual_mode=!(dual_mode);
+    if(joy_msg->buttons.at(SELECT_BUTTON)) dual_mode=!(dual_mode);
 
-    if(joy_msg->buttons.at(14))
+    if(joy_msg->buttons.at(START_BUTTON))
+    {
+	mode.data="safe";
+	mode_pub.publish(mode);
+    }
+
+    if(joy_msg->buttons.at(X_BUTTON))
     {
         song.notes.clear();
         song.song_number = 0;
@@ -108,7 +116,7 @@ void joy_handler::joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg)
         playsong_pub.publish(play);
     }
     
-    if(joy_msg->buttons.at(13)) 
+    if(joy_msg->buttons.at(O_BUTTON)) 
     {
         std_msgs::String mess;
         mess.data = "save_image";

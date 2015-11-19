@@ -44,6 +44,16 @@
 #include "irobotcreate2/PlaySong.h"
 #include <std_msgs/String.h>
 
+#define SELECT_BUTTON 0
+#define START_BUTTON 3
+
+#define X_BUTTON 14
+#define O_BUTTON 13
+
+#define LEFT_X_AXIS 1
+#define LEFT_Y_AXIS 0
+#define RIGHT_Y_AXIS 2
+
 class joy_handler
 {
 public:
@@ -52,11 +62,12 @@ public:
 private:
   ros::NodeHandle nodeh;
   ros::Subscriber joy_sub;
-  ros::Publisher twist_pub, song_pub, playsong_pub;
+  ros::Publisher twist_pub, song_pub, playsong_pub, mode_pub;
   ros::Publisher saver;
   geometry_msgs::Twist twist;
   irobotcreate2::Song song;
   irobotcreate2::PlaySong play;
+  std_msgs::String mode;
   bool dual_mode=true;
 
   void joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg);
