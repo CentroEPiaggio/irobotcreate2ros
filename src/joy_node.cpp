@@ -116,7 +116,7 @@ void joy_handler::joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg)
         playsong_pub.publish(play);
     }
     
-    if(joy_msg->buttons.at(O_BUTTON)) 
+    if(joy_msg->buttons.at(CIRCLE_BUTTON)) 
     {
         std_msgs::String mess;
         mess.data = "save_image";

@@ -45,14 +45,27 @@
 #include <std_msgs/String.h>
 
 #define SELECT_BUTTON 0
+#define L3_BUTTON 1
+#define R3_BUTTON 2
 #define START_BUTTON 3
-
+#define UP_BUTTON 4
+#define RIGHT_BUTTON 5
+#define DOWN_BUTTON 6
+#define LEFT_BUTTON 7
+#define L2_BUTTON 8
+#define R2_BUTTON 9
+#define L1_BUTTON 10
+#define R1_BUTTON 11
+#define TRIANGLE_BUTTON 12
+#define CIRCLE_BUTTON 13
 #define X_BUTTON 14
-#define O_BUTTON 13
+#define SQUARE_BUTTON 15
+#define PLAY_BUTTON 16
 
-#define LEFT_X_AXIS 1
 #define LEFT_Y_AXIS 0
+#define LEFT_X_AXIS 1
 #define RIGHT_Y_AXIS 2
+#define RIGHT_X_AXIS 3
 
 class joy_handler
 {
