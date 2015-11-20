@@ -59,9 +59,12 @@
 #include "irobotcreate2/OpenInterface.h"
 
 #include <string>
+#include <atomic>
 
 std::string port;
 irobot::OpenInterface * roomba;
+std::atomic_bool ir_warning;
+std::atomic_bool bumper_warning;
 
 std::string prefixTopic(std::string prefix, char * name)
 {
@@ -73,7 +76,9 @@ std::string prefixTopic(std::string prefix, char * name)
 
 void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel)
 {
-	roomba->drive(cmd_vel->linear.x, cmd_vel->angular.z);
+	if(bumper_warning.load()) roomba->drive(-0.2, 0);
+	else if(ir_warning.load()) roomba->drive(0, cmd_vel->angular.z);
+	else roomba->drive(cmd_vel->linear.x,cmd_vel->angular.z);
 }
 
 void cmdModeReceived(const std_msgs::String::ConstPtr& cmd_)
@@ -142,6 +147,8 @@ void playSongReceived(const irobotcreate2::PlaySong::ConstPtr& song)
 int main(int argc, char** argv)
 {
 	bool desired_mode_full=false; //if false go in safe_mode
+	bool ir_warning_;
+	bool bumper_warning_;
 
 	ros::init(argc, argv, "roomba560_node");
 
@@ -202,6 +209,8 @@ int main(int argc, char** argv)
 	ros::Rate r(10.0);
 	while(n.ok())
 	{
+		ir_warning_ = false;
+		bumper_warning_ = false;
 		current_time = ros::Time::now();
 		
 		last_x = roomba->odometry_x_;
@@ -280,6 +289,8 @@ int main(int argc, char** argv)
 		bumper.right.header.stamp = current_time;
 		bumper.right.state = roomba->bumper_[RIGHT];
 		bumper_pub.publish(bumper);
+		bumper_warning_ = bumper.left.state || bumper.right.state;
+		bumper_warning.store(bumper_warning_);
 	
 		// ******************************************************************************************	
 		//publish buttons
@@ -329,31 +340,39 @@ int main(int argc, char** argv)
 		irbumper.state = roomba->ir_bumper_[LEFT];
 		irbumper.signal = roomba->ir_bumper_signal_[LEFT];
 		irbumper_pub.publish(irbumper);
+		ir_warning_ = ir_warning_ || irbumper.state;
 
 		irbumper.header.frame_id = "base_irbumper_front_left";
 		irbumper.state = roomba->ir_bumper_[FRONT_LEFT];
 		irbumper.signal = roomba->ir_bumper_signal_[FRONT_LEFT];
 		irbumper_pub.publish(irbumper);
+		ir_warning_ = ir_warning_ || irbumper.state;
 
 		irbumper.header.frame_id = "base_irbumper_center_left";
 		irbumper.state = roomba->ir_bumper_[CENTER_LEFT];
 		irbumper.signal = roomba->ir_bumper_signal_[CENTER_LEFT];
 		irbumper_pub.publish(irbumper);
+		ir_warning_ = ir_warning_ || irbumper.state;
 
 		irbumper.header.frame_id = "base_irbumper_center_right";
 		irbumper.state = roomba->ir_bumper_[CENTER_RIGHT];
 		irbumper.signal = roomba->ir_bumper_signal_[CENTER_RIGHT];
 		irbumper_pub.publish(irbumper);
+		ir_warning_ = ir_warning_ || irbumper.state;
 
 		irbumper.header.frame_id = "base_irbumper_front_right";
 		irbumper.state = roomba->ir_bumper_[FRONT_RIGHT];
 		irbumper.signal = roomba->ir_bumper_signal_[FRONT_RIGHT];
 		irbumper_pub.publish(irbumper);
+		ir_warning_ = ir_warning_ || irbumper.state;
 
 		irbumper.header.frame_id = "base_irbumper_right";
 		irbumper.state = roomba->ir_bumper_[RIGHT];
 		irbumper.signal = roomba->ir_bumper_signal_[RIGHT];
 		irbumper_pub.publish(irbumper);
+		ir_warning_ = ir_warning_ || irbumper.state;
+
+		ir_warning.store(ir_warning_);
 
 		// ******************************************************************************************
 		//publish irchar
