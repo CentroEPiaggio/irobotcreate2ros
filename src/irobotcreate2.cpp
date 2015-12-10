@@ -195,19 +195,21 @@ int main(int argc, char** argv)
             {
                 ROS_WARN_STREAM("Pose_covariance matrix should have " << matSize * matSize << " values.");
             }
-
-            for (int i = 0; i < matSize; i++)
+            else
             {
-                for (int j = 0; j < matSize; j++)
+                for (int i = 0; i < matSize; i++)
                 {
-                    std::ostringstream ostr;
-                    ostr << poseCovarConfig[matSize * i + j];
-                    std::istringstream istr(ostr.str());
-                    istr >> poseCovariance(i, j);
-                    pose_covariance_matrix.push_back(poseCovariance(i,j));
+                    for (int j = 0; j < matSize; j++)
+                    {
+                        std::ostringstream ostr;
+                        ostr << poseCovarConfig[matSize * i + j];
+                        std::istringstream istr(ostr.str());
+                        istr >> poseCovariance(i, j);
+                        pose_covariance_matrix.push_back(poseCovariance(i,j));
+                    }
                 }
+                pose_cov_mat = true;
             }
-            pose_cov_mat = true;
         }
         catch (XmlRpc::XmlRpcException &e)
         {
@@ -230,19 +232,21 @@ int main(int argc, char** argv)
             {
                 ROS_WARN_STREAM("Twist_covariance matrix should have " << matSize * matSize << " values.");
             }
-
-            for (int i = 0; i < matSize; i++)
+            else
             {
-                for (int j = 0; j < matSize; j++)
+                for (int i = 0; i < matSize; i++)
                 {
-                    std::ostringstream ostr;
-                    ostr << twistCovarConfig[matSize * i + j];
-                    std::istringstream istr(ostr.str());
-                    istr >> twistCovariance(i, j);
-                    twist_covariance_matrix.push_back(twistCovariance(i,j));
+                    for (int j = 0; j < matSize; j++)
+                    {
+                        std::ostringstream ostr;
+                        ostr << twistCovarConfig[matSize * i + j];
+                        std::istringstream istr(ostr.str());
+                        istr >> twistCovariance(i, j);
+                        twist_covariance_matrix.push_back(twistCovariance(i,j));
+                    }
                 }
+                twist_cov_mat = true;
             }
-            twist_cov_mat = true;
         }
         catch (XmlRpc::XmlRpcException &e)
         {
