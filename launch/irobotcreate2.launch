@@ -5,5 +5,17 @@
   <node ns="$(arg base_name)$(arg id)" name="irobotdriver" pkg="irobotcreate2" type="irobotcreate2" respawn="false" output="screen">
     <param name="id_" value="$(arg id)"/>
     <param name="base_name_" value="$(arg base_name)"/>
+    <rosparam param="poseCovariance">[1e-6, 0,    0,    0,    0,    0,   
+                                      0,    1e-6, 0,    0,    0,    0, 
+                                      0,    0,    1e-6, 0,    0,    0,  
+                                      0,    0,    0,    1e-6, 0,    0, 
+                                      0,    0,    0,    0,    1e-6, 0,   
+                                      0,    0,    0,    0,    0,    1e-6]</rosparam>
+    <rosparam param="twistCovariance">[1e-6, 0,    0,    0,    0,    0,   
+                                      0,    1e-6, 0,    0,    0,    0, 
+                                      0,    0,    1e-6, 0,    0,    0,  
+                                      0,    0,    0,    1e-6, 0,    0, 
+                                      0,    0,    0,    0,    1e-6, 0,   
+                                      0,    0,    0,    0,    0,    1e-6]</rosparam>
   </node>
 </launch>
