@@ -57,3 +57,5 @@ you can read sensors (/battery, /buttons, /bumper, ...) and send commands (/cmd_
 roslaunch irobotcreate2 irobot_joy.launch
 ```
 to run both the basic software and ros joy to move the robot with a controller.
+
+<!--[Instructions](cad/laser_support/instructions.md)-->
