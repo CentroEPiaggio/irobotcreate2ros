@@ -1,6 +1,8 @@
 <launch>
   <arg name="id" default="0"/>
   <arg name="base_name" default="iRobot_"/>
+  <arg name="port" default="/dev/ttyUSB0"/>
+  <arg name="publish_name" default="true"/>
 
   <node ns="$(arg base_name)$(arg id)" name="irobotdriver" pkg="irobotcreate2" type="irobotcreate2" respawn="false" output="screen">
     <param name="id_" value="$(arg id)"/>
@@ -17,5 +19,8 @@
                                       0,    0,    0,    1e-6, 0,    0, 
                                       0,    0,    0,    0,    1e-6, 0,   
                                       0,    0,    0,    0,    0,    1e-6]</rosparam>
+
+    <param name="port_" value="$(arg port)"/>
+    <param name="publish_name_" value="$(arg publish_name)"/>
   </node>
 </launch>

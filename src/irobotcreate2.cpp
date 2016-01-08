@@ -165,8 +165,24 @@ int main(int argc, char** argv)
 	ros::NodeHandle n;
 	ros::NodeHandle pn("~");
 	
-	pn.param<std::string>("port", port, "/dev/ttyUSB0");
-	
+	std::string base_name;
+	int id;
+	pn.param<std::string>("base_name_", base_name, "iRobot_");
+	pn.param<int>("id_", id, 0);
+	std_msgs::String my_namespace;
+	my_namespace.data = base_name + std::to_string(id);
+
+	bool publish_name;
+	ros::Publisher listpub;
+	pn.param<bool>("publish_name_", publish_name, false);
+	if(publish_name)
+	{
+	    listpub = n.advertise<std_msgs::String>("/agent_list", 50);
+	}
+	int name_count=0;
+
+	pn.param<std::string>("port_", port, "/dev/ttyUSB0");
+
 	std::string base_frame_id;
 	std::string odom_frame_id;
 	pn.param<std::string>("base_frame_id", base_frame_id, "base_link");
@@ -293,6 +309,16 @@ int main(int argc, char** argv)
 	ros::Rate r(10.0);
 	while(n.ok())
 	{
+	        if(publish_name)
+		{
+		    name_count++;
+		    if(name_count >= 10)
+		    {
+			listpub.publish(my_namespace);
+			name_count=0;
+		    }
+		}
+
 		ir_warning_ = false;
 		bumper_warning_ = false;
 		current_time = ros::Time::now();
