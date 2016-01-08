@@ -183,8 +183,8 @@ int main(int argc, char** argv)
 
 	std::string base_frame_id;
 	std::string odom_frame_id;
-	pn.param<std::string>("base_frame_id", base_frame_id, "base_link");
-	pn.param<std::string>("odom_frame_id", odom_frame_id, "odom");
+	pn.param<std::string>("base_frame_id", base_frame_id, my_namespace.data + "/base_link");
+	pn.param<std::string>("odom_frame_id", odom_frame_id, my_namespace.data + "/odom");
 
 	roomba = new irobot::OpenInterface(port.c_str());
 
