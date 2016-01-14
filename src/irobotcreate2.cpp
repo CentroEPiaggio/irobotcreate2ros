@@ -60,6 +60,8 @@
 
 #include <string>
 #include <atomic>
+#include <eigen3/Eigen/Eigen>
+#include <XmlRpc.h>
 
 std::string port;
 irobot::OpenInterface * roomba;
@@ -186,6 +188,88 @@ int main(int argc, char** argv)
 	pn.param<std::string>("base_frame_id", base_frame_id, my_namespace.data + "/base_link");
 	pn.param<std::string>("odom_frame_id", odom_frame_id, my_namespace.data + "/odom");
 
+    Eigen::MatrixXd poseCovariance(6,6);
+    Eigen::MatrixXd twistCovariance(6,6);
+    bool pose_cov_mat = false;
+    bool twist_cov_mat = false;
+    std::vector<double> pose_covariance_matrix; 
+    std::vector<double> twist_covariance_matrix;
+    XmlRpc::XmlRpcValue poseCovarConfig;
+    XmlRpc::XmlRpcValue twistCovarConfig;
+    
+    if (pn.hasParam("poseCovariance"))
+    {
+        try
+        {
+            pn.getParam("poseCovariance", poseCovarConfig);
+
+            ROS_ASSERT(poseCovarConfig.getType() == XmlRpc::XmlRpcValue::TypeArray);
+
+            int matSize = poseCovariance.rows();
+
+            if (poseCovarConfig.size() != matSize * matSize)
+            {
+                ROS_WARN_STREAM("Pose_covariance matrix should have " << matSize * matSize << " values.");
+            }
+            else
+            {
+                for (int i = 0; i < matSize; i++)
+                {
+                    for (int j = 0; j < matSize; j++)
+                    {
+                        std::ostringstream ostr;
+                        ostr << poseCovarConfig[matSize * i + j];
+                        std::istringstream istr(ostr.str());
+                        istr >> poseCovariance(i, j);
+                        pose_covariance_matrix.push_back(poseCovariance(i,j));
+                    }
+                }
+                pose_cov_mat = true;
+            }
+        }
+        catch (XmlRpc::XmlRpcException &e)
+        {
+            ROS_ERROR_STREAM("ERROR reading sensor config: " << e.getMessage() << " for pose_covariance (type: " << poseCovarConfig.getType() << ")");
+        }
+        
+    }
+    
+    if (pn.hasParam("twistCovariance"))
+    {
+        try
+        {
+            pn.getParam("twistCovariance", twistCovarConfig);
+
+            ROS_ASSERT(twistCovarConfig.getType() == XmlRpc::XmlRpcValue::TypeArray);
+
+            int matSize = twistCovariance.rows();
+
+            if (twistCovarConfig.size() != matSize * matSize)
+            {
+                ROS_WARN_STREAM("Twist_covariance matrix should have " << matSize * matSize << " values.");
+            }
+            else
+            {
+                for (int i = 0; i < matSize; i++)
+                {
+                    for (int j = 0; j < matSize; j++)
+                    {
+                        std::ostringstream ostr;
+                        ostr << twistCovarConfig[matSize * i + j];
+                        std::istringstream istr(ostr.str());
+                        istr >> twistCovariance(i, j);
+                        twist_covariance_matrix.push_back(twistCovariance(i,j));
+                    }
+                }
+                twist_cov_mat = true;
+            }
+        }
+        catch (XmlRpc::XmlRpcException &e)
+        {
+            ROS_ERROR_STREAM("ERROR reading sensor config: " << e.getMessage() << " for twist_covariance (type: " << poseCovarConfig.getType() << ")");
+        }
+    }
+    
 	roomba = new irobot::OpenInterface(port.c_str());
 
 	ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
@@ -285,13 +369,19 @@ int main(int argc, char** argv)
 		odom.pose.pose.position.y = roomba->odometry_y_;
 		odom.pose.pose.position.z = 0.0;
 		odom.pose.pose.orientation = tf::createQuaternionMsgFromYaw(roomba->odometry_yaw_);
+        if(pose_cov_mat)
+            for(int i = 0; i < pose_covariance_matrix.size(); i++)
+                odom.pose.covariance[i] = pose_covariance_matrix[i];
 		
 		//set the velocity
 		odom.child_frame_id = base_frame_id;
 		odom.twist.twist.linear.x = vel_x;
 		odom.twist.twist.linear.y = vel_y;
 		odom.twist.twist.angular.z = vel_yaw;
-		
+        if(twist_cov_mat)
+            for(int i = 0; i < pose_covariance_matrix.size(); i++)
+                odom.twist.covariance[i] = twist_covariance_matrix[i];
+        
 		//publish the message
 		odom_pub.publish(odom);
 
