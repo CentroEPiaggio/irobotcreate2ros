@@ -68,7 +68,7 @@ void joy_handler::change_topics(std::string ns)
     song_pub = nodeh.advertise<irobotcreate2::Song>(ns+"/song", 1);
     playsong_pub = nodeh.advertise<irobotcreate2::PlaySong>(ns+"/play_song", 1);
     saver = nodeh.advertise<std_msgs::String>("/syscommand", 1);
-    mode_pub = nodeh.advertise<geometry_msgs::Twist>(ns+"/mode", 1);
+    mode_pub = nodeh.advertise<std_msgs::String>(ns+"/mode", 1);
 }
 
 void joy_handler::agent_selection_callback(const std_msgs::String& msg)
