@@ -45,6 +45,7 @@
 #include <nav_msgs/Odometry.h>				// odom
 #include <geometry_msgs/Twist.h>			// cmd_vel
 #include <std_msgs/String.h>
+#include <std_msgs/Bool.h>
 #include <irobotcreate2/Battery.h>		// battery
 #include <irobotcreate2/Bumper.h>		// bumper
 #include <irobotcreate2/Buttons.h>		// buttons
@@ -81,6 +82,11 @@ void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel)
 	if(bumper_warning.load()) roomba->drive(-0.2, 0);
 	else if(ir_warning.load()) roomba->drive(0, cmd_vel->angular.z);
 	else roomba->drive(cmd_vel->linear.x,cmd_vel->angular.z);
+}
+
+void cmdSpecialReceived(const std_msgs::String::ConstPtr& cmd_)
+{
+    if(cmd_->data=="reset_odom") roomba->resetOdometry();
 }
 
 void cmdModeReceived(const std_msgs::String::ConstPtr& cmd_)
@@ -289,6 +295,7 @@ int main(int argc, char** argv)
     ros::Subscriber song_sub  = n.subscribe<irobotcreate2::Song>("song", 1, songReceived);
     ros::Subscriber playsong_sub  = n.subscribe<irobotcreate2::PlaySong>("play_song", 1, playSongReceived);
     ros::Subscriber mode_sub  = n.subscribe<std_msgs::String>("mode", 1, cmdModeReceived);
+    ros::Subscriber special_sub  = n.subscribe<std_msgs::String>("special", 1, cmdSpecialReceived);
 	
 	irobot::OI_Packet_ID sensor_packets[1] = {irobot::OI_PACKET_GROUP_100};
 	roomba->setSensorPackets(sensor_packets, 1, OI_PACKET_GROUP_100_SIZE);
