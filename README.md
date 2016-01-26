@@ -4,7 +4,7 @@ Ros node for iRobot Create 2.
 
 Prerequisites
 ---
-* [ros serial](http://wiki.ros.org/rosserial)
+* [ros serial](http://wiki.ros.org/serial)
 * [ros joy](http://wiki.ros.org/joy)
 
 Compiling
