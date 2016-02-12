@@ -61,7 +61,7 @@ Odometry::Odometry(size_t velocity_rolling_window_size)
 , angular_acc_(RollingWindow::window_size = velocity_rolling_window_size)
 , integrate_fun_(boost::bind(&Odometry::integrateExact, this, _1, _2))
 {
-    //resetOdometry();
+    resetOdometry();
 }
 
 void Odometry::init(const ros::Time& time)
@@ -74,16 +74,16 @@ void Odometry::init(const ros::Time& time)
 bool Odometry::update(double left_pos, double right_pos, const ros::Time &time)
 {
     /// Get current wheel joint positions:
-    const double left_wheel_cur_pos  = left_pos  * wheel_radius_;
-    const double right_wheel_cur_pos = right_pos * wheel_radius_;
+    //const double left_wheel_cur_pos  = left_pos  * wheel_radius_;
+    //const double right_wheel_cur_pos = right_pos * wheel_radius_;
 
     /// Estimate velocity of wheels using old and current position:
-    const double left_wheel_est_vel  = left_wheel_cur_pos  - left_wheel_old_pos_;
-    const double right_wheel_est_vel = right_wheel_cur_pos - right_wheel_old_pos_;
+    const double left_wheel_est_vel  = left_pos  * wheel_radius_;
+    const double right_wheel_est_vel = right_pos  * wheel_radius_;
 
     /// Update old position with current:
-    left_wheel_old_pos_  = left_wheel_cur_pos;
-    right_wheel_old_pos_ = right_wheel_cur_pos;
+    //left_wheel_old_pos_  = left_wheel_cur_pos;
+    //right_wheel_old_pos_ = right_wheel_cur_pos;
 
     /// Compute linear and angular diff:
     const double linear  = (right_wheel_est_vel + left_wheel_est_vel) * 0.5 ;
@@ -180,6 +180,4 @@ void Odometry::resetOdometry()
     y_ = 0.0;
     linear_ = 0.0;
     angular_ = 0.0;
-    left_wheel_old_pos_ = 0.0;
-    right_wheel_old_pos_ = 0.0;
 }

@@ -1353,26 +1353,14 @@ int irobot::OpenInterface::buffer2unsigned_int(unsigned char * buffer, int index
 // *****************************************************************************
 // Calculate Roomba odometry
 void irobot::OpenInterface::calculateOdometry()
-{	
-    /*  OLD CODE
-     * double dist = (encoder_counts_[RIGHT]*ROOMBA_PULSES_TO_M + encoder_counts_[LEFT]*ROOMBA_PULSES_TO_M) / 2.0; 
-    double ang = (encoder_counts_[RIGHT]*ROOMBA_PULSES_TO_M - encoder_counts_[LEFT]*ROOMBA_PULSES_TO_M) / -ROOMBA_AXLE_LENGTH;
-
-    // Update odometry
-    this->odometry_yaw_ = NORMALIZE(this->odometry_yaw_ + ang);         // rad
-    this->odometry_x_ = this->odometry_x_ + dist*cos(odometry_yaw_);        // m
-    this->odometry_y_ = this->odometry_y_ + dist*sin(odometry_yaw_);        // m*/
+{	   
+    const double left_pose = (encoder_counts_[LEFT])*2*M_PI/508.8;
+    const double right_pose = (encoder_counts_[RIGHT])*2*M_PI/508.8;
     
-    const double left_pose = (last_encoder_counts_[LEFT] - offset_[LEFT])*2*M_PI/508.8;
-    const double right_pose = (last_encoder_counts_[RIGHT] - offset_[RIGHT])*2*M_PI/508.8;
-    
-    std::cout << left_pose << "\t" << right_pose << std::endl;
+    //std::cout << left_pose << "\t" << right_pose << std::endl;
     this->new_odometry_.update(left_pose, right_pose, ros::Time::now());
-    
-	
-    
+   
     this->odometry_yaw_ = this->new_odometry_.getHeading();        // rad
-    std::cout << this->new_odometry_.getHeading()*180/M_PI << std::endl;
     this->odometry_x_ = this->new_odometry_.getX();                // m
     this->odometry_y_ = this->new_odometry_.getY();                // m
 }
@@ -1381,11 +1369,11 @@ void irobot::OpenInterface::calculateOdometry()
 // *****************************************************************************
 // Reset Roomba odometry
 void irobot::OpenInterface::resetOdometry()
-{
-	//this->setOdometry(0.0, 0.0, 0.0);
+{   
     this->new_odometry_.resetOdometry();
-    offset_[LEFT] = last_encoder_counts_[LEFT];
-    offset_[RIGHT] = last_encoder_counts_[RIGHT];
+    this->odometry_x_ = this->new_odometry_.getX();
+    this->odometry_y_ = this->new_odometry_.getY();
+    this->odometry_yaw_ = this->new_odometry_.getHeading();
 }
 
 

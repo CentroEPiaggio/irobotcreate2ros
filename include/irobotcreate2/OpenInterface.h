@@ -673,7 +673,6 @@ namespace irobot
 		int encoder_counts_[2];
 		//! Last encoder counts reading. For odometry calculation.
 		uint16_t last_encoder_counts_[2];
-        uint16_t offset_[2];
 	};
 
 }

@@ -317,7 +317,7 @@ int main(int argc, char** argv)
 
 	bool first_loop=true;
 
-    while(roomba->getSensorPackets(100) == -1)
+    while(roomba->getSensorPackets(100) == -1 && ros::ok())
     {
         usleep(100);
         ROS_INFO_STREAM("Waiting for roomba sensors");
