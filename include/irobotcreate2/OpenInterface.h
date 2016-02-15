@@ -39,6 +39,7 @@
 *********************************************************************/
 
 #include <serial/serial.h>
+#include "../../include/irobotcreate2/odometry.h"
 
 // Packets sizes
 #define OI_PACKET_GROUP_0_SIZE						26
@@ -154,6 +155,7 @@
 #define ROOMBA_BUMPER_X_OFFSET		0.050
 #define ROOMBA_DIAMETER				0.330
 #define ROOMBA_AXLE_LENGTH			0.235
+#define ROOMBA_WHEEL_DIAMETER       0.072
 
 #define ROOMBA_MAX_LIN_VEL_MM_S		500
 #define ROOMBA_MAX_ANG_VEL_RAD_S	2  
@@ -520,6 +522,8 @@ namespace irobot
 		//! Roomba odometry yaw
 		double odometry_yaw_;
 	
+        Odometry new_odometry_;  //NEW ODOMETRY
+        
 		bool wall_;						//! Wall detected.
 		bool virtual_wall_;				//! Virtual wall detected.
 		bool cliff_[4];					//! Cliff sensors. Indexes: LEFT FRONT_LEFT FRONT_RIGHT RIGHT

@@ -48,16 +48,16 @@
 #include <unistd.h>
 #include <iostream>
 #include "../../include/irobotcreate2/OpenInterface.h"
+#include "../../include/irobotcreate2/odometry.h"
 
 // *****************************************************************************
 // Constructor
-irobot::OpenInterface::OpenInterface(const char * new_serial_port)
+irobot::OpenInterface::OpenInterface(const char * new_serial_port):new_odometry_()
 {	
 	port_name_ = new_serial_port;
 
 	OImode_ = OI_MODE_OFF;
 	
-	this->resetOdometry();
 	
 	encoder_counts_[LEFT] = -1;
 	encoder_counts_[RIGHT] = -1;
@@ -68,7 +68,11 @@ irobot::OpenInterface::OpenInterface(const char * new_serial_port)
 	num_of_packets_ = 0;
 	sensor_packets_ = NULL;
 	packets_size_ = 0;
-	
+    
+   
+    this->new_odometry_.setWheelParams(ROOMBA_AXLE_LENGTH, ROOMBA_WHEEL_DIAMETER/2);
+    this->new_odometry_.init(ros::Time::now());
+    
 	// Default packets
 	OI_Packet_ID default_packets[2] = {OI_PACKET_RIGHT_ENCODER, OI_PACKET_LEFT_ENCODER};
 	this->setSensorPackets(default_packets, 2, OI_PACKET_RIGHT_ENCODER_SIZE + OI_PACKET_LEFT_ENCODER_SIZE);
@@ -1349,22 +1353,27 @@ int irobot::OpenInterface::buffer2unsigned_int(unsigned char * buffer, int index
 // *****************************************************************************
 // Calculate Roomba odometry
 void irobot::OpenInterface::calculateOdometry()
-{	
-	double dist = (encoder_counts_[RIGHT]*ROOMBA_PULSES_TO_M + encoder_counts_[LEFT]*ROOMBA_PULSES_TO_M) / 2.0; 
-	double ang = (encoder_counts_[RIGHT]*ROOMBA_PULSES_TO_M - encoder_counts_[LEFT]*ROOMBA_PULSES_TO_M) / -ROOMBA_AXLE_LENGTH;
-
-	// Update odometry
-	this->odometry_yaw_ = NORMALIZE(this->odometry_yaw_ + ang);			// rad
-	this->odometry_x_ = this->odometry_x_ + dist*cos(odometry_yaw_);		// m
-	this->odometry_y_ = this->odometry_y_ + dist*sin(odometry_yaw_);		// m
+{	   
+    const double left_pose = (encoder_counts_[LEFT])*2*M_PI/508.8;
+    const double right_pose = (encoder_counts_[RIGHT])*2*M_PI/508.8;
+    
+    //std::cout << left_pose << "\t" << right_pose << std::endl;
+    this->new_odometry_.update(left_pose, right_pose, ros::Time::now());
+   
+    this->odometry_yaw_ = this->new_odometry_.getHeading();        // rad
+    this->odometry_x_ = this->new_odometry_.getX();                // m
+    this->odometry_y_ = this->new_odometry_.getY();                // m
 }
 
 
 // *****************************************************************************
 // Reset Roomba odometry
 void irobot::OpenInterface::resetOdometry()
-{
-	this->setOdometry(0.0, 0.0, 0.0);
+{   
+    this->new_odometry_.resetOdometry();
+    this->odometry_x_ = this->new_odometry_.getX();
+    this->odometry_y_ = this->new_odometry_.getY();
+    this->odometry_yaw_ = this->new_odometry_.getHeading();
 }
 
 
