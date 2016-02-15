@@ -58,6 +58,7 @@
 #include <irobotcreate2/PlaySong.h>		// play_song
 
 #include "irobotcreate2/OpenInterface.h"
+#include "irobotcreate2/odometry.h"
 
 #include <string>
 #include <atomic>
@@ -193,6 +194,9 @@ int main(int argc, char** argv)
 	std::string odom_frame_id;
 	pn.param<std::string>("base_frame_id", base_frame_id, my_namespace.data + "/base_link");
 	pn.param<std::string>("odom_frame_id", odom_frame_id, my_namespace.data + "/odom");
+    
+    bool publishTf;
+    pn.param<bool>("publishTf", publishTf, true);
 
     Eigen::MatrixXd poseCovariance(6,6);
     Eigen::MatrixXd twistCovariance(6,6);
@@ -313,7 +317,15 @@ int main(int argc, char** argv)
 
 	bool first_loop=true;
 
-	ros::Rate r(10.0);
+    while(roomba->getSensorPackets(100) == -1)
+    {
+        usleep(100);
+        ROS_INFO_STREAM("Waiting for roomba sensors");
+    }
+    roomba->calculateOdometry();
+    roomba->resetOdometry();
+    
+	ros::Rate r(50.0);
 	while(n.ok())
 	{
 	        if(publish_name)
@@ -337,22 +349,30 @@ int main(int argc, char** argv)
 		if( roomba->getSensorPackets(100) == -1) ROS_ERROR("Could not retrieve sensor packets.");
 		else roomba->calculateOdometry();
 		
-		dt = (current_time - last_time).toSec();
+		/* OLD CODE
+         * dt = (current_time - last_time).toSec();
 		vel_x = (roomba->odometry_x_ - last_x)/dt;
 		vel_y = (roomba->odometry_y_ - last_y)/dt;
-		vel_yaw = (roomba->odometry_yaw_ - last_yaw)/dt;
+		vel_yaw = (roomba->odometry_yaw_ - last_yaw)/dt;*/
+        
+        vel_x = roomba->new_odometry_.getLinear();
+        vel_y = 0.0;
+        vel_yaw = roomba->new_odometry_.getAngular();
 		
 		// ******************************************************************************************
 		//first, we'll publish the transforms over tf
-		geometry_msgs::TransformStamped odom_trans;
-		odom_trans.header.stamp = current_time;
-		odom_trans.header.frame_id = odom_frame_id;
-		odom_trans.child_frame_id = base_frame_id;
-		odom_trans.transform.translation.x = roomba->odometry_x_;
-		odom_trans.transform.translation.y = roomba->odometry_y_;
-		odom_trans.transform.translation.z = 0.0;
-		odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(roomba->odometry_yaw_);
-		tf_broadcaster.sendTransform(odom_trans);
+        if(publishTf)
+        {
+            geometry_msgs::TransformStamped odom_trans;
+            odom_trans.header.stamp = current_time;
+            odom_trans.header.frame_id = odom_frame_id;
+            odom_trans.child_frame_id = base_frame_id;
+            odom_trans.transform.translation.x = roomba->odometry_x_;
+            odom_trans.transform.translation.y = roomba->odometry_y_;
+            odom_trans.transform.translation.z = 0.0;
+            odom_trans.transform.rotation = tf::createQuaternionMsgFromYaw(roomba->odometry_yaw_);
+            tf_broadcaster.sendTransform(odom_trans);
+        }
 		
 		//TODO: Finish brodcasting the tf for all the ir sensors on the Roomba
 		/*geometry_msgs::TransformStamped cliff_left_trans;

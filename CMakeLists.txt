@@ -53,10 +53,10 @@ catkin_package()
 
 include_directories(include)
 
-add_executable(irobotcreate2_lightweight src/irobotcreate2/OpenInterface.cpp src/irobotcreate2_lightweight.cpp)
+add_executable(irobotcreate2_lightweight src/irobotcreate2/OpenInterface.cpp src/irobotcreate2/odometry.cpp src/irobotcreate2_lightweight.cpp)
 add_dependencies(irobotcreate2_lightweight irobotcreate2_lightweight_gencpp)
 
-add_executable(irobotcreate2 src/irobotcreate2/OpenInterface.cpp src/irobotcreate2.cpp)
+add_executable(irobotcreate2 src/irobotcreate2/OpenInterface.cpp src/irobotcreate2/odometry.cpp src/irobotcreate2.cpp)
 add_dependencies(irobotcreate2 irobotcreate2_gencpp)
 
 add_executable(joy_node src/joy_node.cpp)
@@ -65,7 +65,7 @@ add_dependencies(joy_node irobotcreate2_generate_messages_cpp)
 add_executable(keyboard_node src/keyboard_node.cpp)
 add_dependencies(keyboard_node irobotcreate2_generate_messages_cpp)
 
-add_executable(basic_commands src/irobotcreate2/OpenInterface.cpp src/basic_commands.cpp)
+add_executable(basic_commands src/irobotcreate2/OpenInterface.cpp src/irobotcreate2/odometry.cpp src/basic_commands.cpp)
 
 target_link_libraries(irobotcreate2_lightweight ${catkin_LIBRARIES})
 
