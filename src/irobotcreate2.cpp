@@ -69,6 +69,8 @@ std::string port;
 irobot::OpenInterface * roomba;
 std::atomic_bool ir_warning;
 std::atomic_bool bumper_warning;
+ros::Time last_cmd_vel(0);
+ros::Duration cmd_vel_duration(0,200000000);
 
 std::string prefixTopic(std::string prefix, char * name)
 {
@@ -83,6 +85,8 @@ void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel)
 	if(bumper_warning.load()) roomba->drive(-0.2, 0);
 	else if(ir_warning.load()) roomba->drive(0, cmd_vel->angular.z);
 	else roomba->drive(cmd_vel->linear.x,cmd_vel->angular.z);
+
+	last_cmd_vel = ros::Time::now();
 }
 
 void cmdSpecialReceived(const std_msgs::String::ConstPtr& cmd_)
@@ -324,10 +328,17 @@ int main(int argc, char** argv)
     }
     roomba->calculateOdometry();
     roomba->resetOdometry();
+
+    
     
 	ros::Rate r(50.0);
 	while(n.ok())
 	{
+		if(ros::Time::now() - last_cmd_vel > cmd_vel_duration)
+		{
+		    roomba->drive(0,0);
+		}
+
 	        if(publish_name)
 		{
 		    name_count++;
