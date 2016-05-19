@@ -1,29 +1,24 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="id" default="0"/>
-  <arg name="base_name" default="iRobot_"/>
-  <arg name="port" default="/dev/ttyUSB0"/>
-  <arg name="publish_name" default="true"/>
+    <arg name="robot_id" default="iRobot_0"/>
+    <arg name="port" default="/dev/ttyUSB0"/>
 
-  <node ns="$(arg base_name)$(arg id)" name="irobotdriver" pkg="irobotcreate2" type="irobotcreate2" respawn="false" output="screen">
-    <param name="id_" value="$(arg id)"/>
-    <param name="base_name_" value="$(arg base_name)"/>
-    <rosparam param="poseCovariance">[1e-2, 0,    0,    0,    0,    0,   
-                                      0,    1e-2, 0,    0,    0,    0, 
-                                      0,    0,    1, 0,    0,    0,  
-                                      0,    0,    0,    1, 0,    0, 
-                                      0,    0,    0,    0,    1, 0,   
-                                      0,    0,    0,    0,    0,    1e-1]</rosparam>
-    <rosparam param="twistCovariance">[1e-2, 0,    0,    0,    0,    0,   
-                                      0,    1, 0,    0,    0,    0, 
-                                      0,    0,    1, 0,    0,    0,  
-                                      0,    0,    0,    1, 0,    0, 
-                                      0,    0,    0,    0,    1, 0,   
-                                      0,    0,    0,    0,    0,    1e-2]</rosparam>
-
-    <param name="port_" value="$(arg port)"/>
-    <param name="publish_name_" value="$(arg publish_name)"/>
-    <param name="publishTf" value="true"/>
-  </node>
+    <node ns="$(arg robot_id)" name="irobotdriver" pkg="irobotcreate2" type="irobotcreate2_lightweight" respawn="false" output="screen">
+        <rosparam param="poseCovariance">[0.0001, 0,    0,    0,    0,    0,   
+                                            0,    0.0001, 0,    0,    0,    0, 
+                                            0,    0,    1000000000000.0, 0,    0,    0,  
+                                            0,    0,    0,    1000000000000.0, 0,    0, 
+                                            0,    0,    0,    0,    1000000000000.0, 0,   
+                                            0,    0,    0,    0,    0,    0.01]</rosparam>
+        <rosparam param="twistCovariance">[0.00001, 0,    0,    0,    0,    0,   
+                                            0,    1000000000000.0, 0,    0,    0,    0, 
+                                            0,    0,    1000000000000.0, 0,    0,    0,  
+                                            0,    0,    0,    1000000000000.0, 0,    0, 
+                                            0,    0,    0,    0,    1000000000000.0, 0,   
+                                            0,    0,    0,    0,    0,    0.0001]</rosparam>
+        <param name="robot_id" value="$(arg robot_id)"/>
+        <param name="port_" value="$(arg port)"/>
+        <param name="publishTf" value="false"/>
+    </node>
 </launch>
