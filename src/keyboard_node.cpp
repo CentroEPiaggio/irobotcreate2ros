@@ -39,8 +39,8 @@
 
 #include "keyboard_node.h"
 
-#define MAX_LIN_VEL 0.1
-#define MAX_ANG_VEL 1.0
+#define MAX_LIN_VEL 0.20
+#define MAX_ANG_VEL 0.75
 
 int kfd = 0;
 struct termios cooked, raw;
