@@ -58,6 +58,7 @@ joy_handler::joy_handler()
     twist.angular.z=0;
 
     selection_sub = nodeh.subscribe("/agent_selection",10,&joy_handler::agent_selection_callback,this);
+    dual_mode=true;
 }
 
 void joy_handler::change_topics(std::string ns)

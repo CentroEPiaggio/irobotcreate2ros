@@ -81,7 +81,7 @@ private:
   irobotcreate2::Song song;
   irobotcreate2::PlaySong play;
   std_msgs::String mode;
-  bool dual_mode=true;
+  bool dual_mode;
 
   void joy_receive(const sensor_msgs::Joy::ConstPtr& joy_msg);
   void agent_selection_callback(const std_msgs::String& msg);
