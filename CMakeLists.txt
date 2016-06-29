@@ -51,7 +51,7 @@ generate_messages(
 
 catkin_package()
 
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(irobotcreate2_lightweight src/irobotcreate2/OpenInterface.cpp src/irobotcreate2/odometry.cpp src/irobotcreate2_lightweight.cpp)
 add_dependencies(irobotcreate2_lightweight irobotcreate2_lightweight_gencpp)
