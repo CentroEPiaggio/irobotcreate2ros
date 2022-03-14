@@ -2,6 +2,34 @@ irobotcreate2ros
 ===
 Ros node for iRobot Create 2.
 
+
+Updated Procedures for MECH 464 iRobot Create2 team, Winter 2021/22.
+
+Creating the base ROS workspace:
+- Start by creating a workspace in your local folder as follows: mkdir -p mech464_ws/src
+- cd mech464_ws
+- catkin_make
+- catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python3
+- source devel/setup.bash
+- echo $ROS_PACKAGE_PATH /home/fizzer/mech464_ws/src:/opt/ros/melodic/share
+
+Adding the irobotcreate2ros node to your folder:
+- cd /home/fizzer/mech464_ws/src
+- git clone https://github.com/kritika-joshi/irobotcreate2ros.git
+- cd ..
+- catkin_make
+- cd src/irobotcreate2ros/model
+- source generate_model.sh
+- cd
+- subl .bashrc
+- add the following commands to your bashrc: 
+  - source /usr/share/gazebo/setup.sh
+  - export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(rospack find irobotcreate2)
+  - export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:$(rospack find irobotcreate2)
+  - source /home/fizzer/mech464_ws/devel/setup.bash
+
+
+
 Prerequisites
 ---
 * [ros serial](http://wiki.ros.org/serial)
