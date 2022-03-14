@@ -13,6 +13,12 @@ Creating the base ROS workspace:
 - source devel/setup.bash
 - echo $ROS_PACKAGE_PATH /home/fizzer/mech464_ws/src:/opt/ros/melodic/share
 
+Add ros_serial to your src:
+- cd /home/fizzer/mech464_ws/src
+- git clone git://github.com/wjwwood/serial.git
+- cd serial
+- make
+
 Adding the irobotcreate2ros node to your folder:
 - cd /home/fizzer/mech464_ws/src
 - git clone https://github.com/kritika-joshi/irobotcreate2ros.git
