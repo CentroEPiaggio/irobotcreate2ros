@@ -4,7 +4,7 @@
   <arg name="z_pos" default="0.2"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find irobotcreate2)/worlds/irobotcreate2_world.world"/>
+    <arg name="world_name" value="$(find irobotcreate2)/irobotcreate2_world.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>

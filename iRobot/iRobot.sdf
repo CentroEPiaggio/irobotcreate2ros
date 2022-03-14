@@ -1,9 +1,9 @@
-<sdf version='1.5'>
+<sdf version='1.6'>
   <model name='iRobot'>
     <link name='base_link'>
-      <pose>0 0 0 0 -0 0</pose>
+      <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose>-9.99689e-06 0 2.05936e-06 0 -0 0</pose>
+        <pose frame=''>-1e-05 0 2e-06 0 -0 0</pose>
         <mass>10.0031</mass>
         <inertia>
           <ixx>0.425046</ixx>
@@ -14,17 +14,25 @@
           <izz>0.850052</izz>
         </inertia>
       </inertial>
-      <collision name='base_link_collision'>
-        <pose>0 0 0 0 -0 0</pose>
+      <collision name='base_link_fixed_joint_lump__chassis_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.08</length>
             <radius>0.17</radius>
           </cylinder>
         </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
       </collision>
-      <collision name='base_link_collision_base_link_1'>
-        <pose>0 0.14 -0.02 -1.5708 0 0</pose>
+      <collision name='base_link_fixed_joint_lump__left_axis_collision_1'>
+        <pose frame=''>0 0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -32,8 +40,8 @@
           </cylinder>
         </geometry>
       </collision>
-      <collision name='base_link_collision_base_link_2'>
-        <pose>0 -0.14 -0.02 -1.5708 0 0</pose>
+      <collision name='base_link_fixed_joint_lump__right_axis_collision_2'>
+        <pose frame=''>0 -0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -41,42 +49,72 @@
           </cylinder>
         </geometry>
       </collision>
-      <collision name='base_link_collision_base_link_3'>
-        <pose>0 0 0.1 0 -0 0</pose>
+      <collision name='base_link_fixed_joint_lump__camera_link_collision_3'>
+        <pose frame=''>0 0 0.1 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.02 0.08 0.05</size>
           </box>
         </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
       </collision>
-      <collision name='base_link_collision_base_link_4'>
-        <pose>0 0 0.06 0 -0 0</pose>
+      <collision name='base_link_fixed_joint_lump__hokuyo_laser_link_collision_4'>
+        <pose frame=''>0 0 0.06 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.04</length>
             <radius>0.045</radius>
           </cylinder>
         </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
       </collision>
-      <collision name='base_link_collision_base_link_5'>
-        <pose>-0.1 0 0.05 0 -0 0</pose>
+      <collision name='base_link_fixed_joint_lump__imu_sensor_link_collision_5'>
+        <pose frame=''>-0.1 0 0.05 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.02 0.02 0.02</size>
           </box>
         </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
       </collision>
-      <visual name='base_link_visual'>
-        <pose>0 0 0 0 -0 0</pose>
+      <visual name='base_link_fixed_joint_lump__chassis_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.08</length>
             <radius>0.17</radius>
           </cylinder>
         </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Yellow</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
       </visual>
-      <visual name='base_link_visual_base_link_1'>
-        <pose>0 0.14 -0.02 -1.5708 0 0</pose>
+      <visual name='base_link_fixed_joint_lump__left_axis_visual_1'>
+        <pose frame=''>0 0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -84,8 +122,8 @@
           </cylinder>
         </geometry>
       </visual>
-      <visual name='base_link_visual_base_link_2'>
-        <pose>0 -0.14 -0.02 -1.5708 0 0</pose>
+      <visual name='base_link_fixed_joint_lump__right_axis_visual_2'>
+        <pose frame=''>0 -0.14 -0.02 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -93,30 +131,48 @@
           </cylinder>
         </geometry>
       </visual>
-      <visual name='base_link_visual_base_link_3'>
-        <pose>0 0 0.1 0 -0 0</pose>
+      <visual name='base_link_fixed_joint_lump__camera_link_visual_3'>
+        <pose frame=''>0 0 0.1 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.02 0.08 0.05</size>
           </box>
         </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
       </visual>
-      <visual name='base_link_visual_base_link_4'>
-        <pose>0 0 0.06 0 -0 0</pose>
+      <visual name='base_link_fixed_joint_lump__hokuyo_laser_link_visual_4'>
+        <pose frame=''>0 0 0.06 0 -0 0</pose>
         <geometry>
           <cylinder>
             <length>0.04</length>
             <radius>0.045</radius>
           </cylinder>
         </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
       </visual>
-      <visual name='base_link_visual_base_link_5'>
-        <pose>-0.1 0 0.05 0 -0 0</pose>
+      <visual name='base_link_fixed_joint_lump__imu_sensor_link_visual_5'>
+        <pose frame=''>-0.1 0 0.05 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.02 0.02 0.02</size>
           </box>
         </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
       </visual>
       <velocity_decay/>
       <velocity_decay/>
@@ -141,7 +197,7 @@
           </noise>
         </camera>
         <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
-          <alwaysOn>true</alwaysOn>
+          <alwaysOn>1</alwaysOn>
           <updateRate>0.0</updateRate>
           <cameraName>iRobot/camera</cameraName>
           <imageTopicName>image_raw</imageTopicName>
@@ -154,7 +210,7 @@
           <distortionT1>0.0</distortionT1>
           <distortionT2>0.0</distortionT2>
         </plugin>
-        <pose>0 0 0.1 0 -0 0</pose>
+        <pose frame=''>0 0 0.1 0 -0 0</pose>
       </sensor>
       <gravity>1</gravity>
       <velocity_decay/>
@@ -187,11 +243,10 @@
           <topicName>laser_scan</topicName>
           <frameName>hokuyo_laser_link</frameName>
         </plugin>
-        <pose>0 0 0.06 0 -0 0</pose>
+        <pose frame=''>0 0 0.06 0 -0 0</pose>
       </sensor>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
       <gravity>1</gravity>
       <sensor name='imu_sensor' type='imu'>
         <always_on>1</always_on>
@@ -206,13 +261,13 @@
           <xyzOffset>0 0 0</xyzOffset>
           <rpyOffset>0 0 0</rpyOffset>
         </plugin>
-        <pose>-0.1 0 0.05 0 -0 0</pose>
+        <pose frame=''>-0.1 0 0.05 0 -0 0</pose>
       </sensor>
     </link>
     <link name='left_wheel_link'>
-      <pose>0 0.14 -0.02 0 -0 0</pose>
+      <pose frame=''>0 0.14 -0.02 0 -0 0</pose>
       <inertial>
-        <pose>0 0.01 0 -1.5708 0 0</pose>
+        <pose frame=''>0 0.01 0 -1.5708 0 0</pose>
         <mass>0.5</mass>
         <inertia>
           <ixx>0.00375</ixx>
@@ -224,14 +279,13 @@
         </inertia>
       </inertial>
       <collision name='left_wheel_link_collision'>
-        <pose>0 0 0 -1.5708 0 0</pose>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
             <radius>0.03</radius>
           </cylinder>
         </geometry>
-        <max_contacts>1</max_contacts>
         <surface>
           <contact>
             <ode>
@@ -248,9 +302,10 @@
             </ode>
           </friction>
         </surface>
+        <max_contacts>1</max_contacts>
       </collision>
       <visual name='left_wheel_link_visual'>
-        <pose>0 0 0 -1.5708 0 0</pose>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -260,13 +315,12 @@
         <material>
           <script>
             <name>Gazebo/Grey</name>
-            <uri>__default__</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
       <gravity>1</gravity>
     </link>
     <joint name='left_wheel_rot_joint' type='revolute'>
@@ -282,13 +336,13 @@
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
     <link name='right_wheel_link'>
-      <pose>0 -0.14 -0.02 0 -0 0</pose>
+      <pose frame=''>0 -0.14 -0.02 0 -0 0</pose>
       <inertial>
-        <pose>0 0.01 0 -1.5708 0 0</pose>
+        <pose frame=''>0 0.01 0 -1.5708 0 0</pose>
         <mass>0.5</mass>
         <inertia>
           <ixx>0.00375</ixx>
@@ -300,14 +354,13 @@
         </inertia>
       </inertial>
       <collision name='right_wheel_link_collision'>
-        <pose>0 0 0 -1.5708 0 0</pose>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
             <radius>0.03</radius>
           </cylinder>
         </geometry>
-        <max_contacts>1</max_contacts>
         <surface>
           <contact>
             <ode>
@@ -324,9 +377,10 @@
             </ode>
           </friction>
         </surface>
+        <max_contacts>1</max_contacts>
       </collision>
       <visual name='right_wheel_link_visual'>
-        <pose>0 0 0 -1.5708 0 0</pose>
+        <pose frame=''>0 0 0 -1.5708 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.02</length>
@@ -336,13 +390,12 @@
         <material>
           <script>
             <name>Gazebo/Grey</name>
-            <uri>__default__</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
       <gravity>1</gravity>
     </link>
     <joint name='right_wheel_rot_joint' type='revolute'>
@@ -358,13 +411,13 @@
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
     <link name='sphere1'>
-      <pose>0.14 0 -0.04 0 -0 0</pose>
+      <pose frame=''>0.14 0 -0.04 0 -0 0</pose>
       <inertial>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <mass>0.3</mass>
         <inertia>
           <ixx>0.0012</ixx>
@@ -376,13 +429,12 @@
         </inertia>
       </inertial>
       <collision name='sphere1_collision'>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
             <radius>0.01</radius>
           </sphere>
         </geometry>
-        <max_contacts>1</max_contacts>
         <surface>
           <contact>
             <ode>
@@ -399,9 +451,10 @@
             </ode>
           </friction>
         </surface>
+        <max_contacts>1</max_contacts>
       </collision>
       <visual name='sphere1_visual'>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
             <radius>0.01</radius>
@@ -410,13 +463,12 @@
         <material>
           <script>
             <name>Gazebo/Grey</name>
-            <uri>__default__</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
       <gravity>1</gravity>
     </link>
     <joint name='sphere_joint1' type='revolute'>
@@ -434,13 +486,13 @@
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
     <link name='sphere2'>
-      <pose>-0.14 0 -0.04 0 -0 0</pose>
+      <pose frame=''>-0.14 0 -0.04 0 -0 0</pose>
       <inertial>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <mass>0.3</mass>
         <inertia>
           <ixx>0.0012</ixx>
@@ -452,13 +504,12 @@
         </inertia>
       </inertial>
       <collision name='sphere2_collision'>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
             <radius>0.01</radius>
           </sphere>
         </geometry>
-        <max_contacts>1</max_contacts>
         <surface>
           <contact>
             <ode>
@@ -475,9 +526,10 @@
             </ode>
           </friction>
         </surface>
+        <max_contacts>1</max_contacts>
       </collision>
       <visual name='sphere2_visual'>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <sphere>
             <radius>0.01</radius>
@@ -486,13 +538,12 @@
         <material>
           <script>
             <name>Gazebo/Grey</name>
-            <uri>__default__</uri>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
       </visual>
       <gravity>1</gravity>
       <velocity_decay/>
-      <self_collide>0</self_collide>
       <gravity>1</gravity>
     </link>
     <joint name='sphere_joint2' type='revolute'>
@@ -510,15 +561,15 @@
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
     <static>0</static>
     <plugin name='differential_drive_controller' filename='libgazebo_ros_diff_drive.so'>
       <rosDebugLevel>Debug</rosDebugLevel>
-      <publishWheelTF>false</publishWheelTF>
-      <publishWheelJointState>true</publishWheelJointState>
-      <alwaysOn>true</alwaysOn>
+      <publishWheelTF>0</publishWheelTF>
+      <publishWheelJointState>1</publishWheelJointState>
+      <alwaysOn>1</alwaysOn>
       <leftJoint>left_wheel_rot_joint</leftJoint>
       <rightJoint>right_wheel_rot_joint</rightJoint>
       <wheelSeparation>0.28</wheelSeparation>
@@ -535,7 +586,7 @@
     <plugin name='joint_state_publisher' filename='libgazebo_ros_joint_state_publisher.so'>
       <jointName>left_wheel_rot_joint, right_wheel_rot_joint</jointName>
       <updateRate>10.0</updateRate>
-      <alwaysOn>true</alwaysOn>
+      <alwaysOn>1</alwaysOn>
     </plugin>
     <plugin name='imu_plugin' filename='libgazebo_ros_imu.so'>
       <bodyName>base_link</bodyName>
