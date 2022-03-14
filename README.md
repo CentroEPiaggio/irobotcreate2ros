@@ -34,6 +34,9 @@ Adding the irobotcreate2ros node to your folder:
   - export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:$(rospack find irobotcreate2)
   - source /home/fizzer/mech464_ws/devel/setup.bash
 
+Add your user to dialout group so it connects to USB properly:
+- sudo usermod -a -G dialout fizzer
+
 Bugs - if you don't have catkin_make installed:
 sudo apt-get install ros-melodic-catkin python-catkin-tools
 
