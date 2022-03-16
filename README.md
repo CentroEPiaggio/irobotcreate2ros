@@ -38,11 +38,17 @@ Add your user to dialout group so it connects to USB properly:
 - sudo usermod -a -G dialout fizzer
 - log out and log in again
 
-Running with the robot:
+Running with the physical robot:
 - cd /home/fizzer/mech464_ws/src/irobotcreate2ros/
 - roslaunch irobotcreate2 irobotcreate2.launch
 - publish command velocities in a different terminal as follows:
-  - rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}' 
+  - rostopic pub -r 10 /iRobot_0/cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}' 
+
+Running the robot on Gazebo:
+- cd /home/fizzer/mech464_ws/src/irobotcreate2ros/
+- roslaunch irobotcreate2 gazebo.launch
+- publish command velocities in a different terminal as follows:
+  - rostopic pub /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}' 
 
 Bugs - if you don't have catkin_make installed:
 sudo apt-get install ros-melodic-catkin python-catkin-tools
