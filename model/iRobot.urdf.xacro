@@ -32,7 +32,7 @@
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="10"/>
-             <inertia ixx="${1/12*10*3*0.17^2+1/12*5*3*0.08^2}" ixy="0.0" ixz="0.0" iyy="${1/12*10*3*0.17^2+1/12*5*3*0.08^2}" iyz="0.0" izz="${1/2*10*0.17^2}"/> 
+             <inertia ixx="${1/12*10*3*0.17**2+1/12*5*3*0.08**2}" ixy="0.0" ixz="0.0" iyy="${1/12*10*3*0.17**2+1/12*5*3*0.08**2}" iyz="0.0" izz="${1/2*10*0.17**2}"/> 
         </inertial>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -86,7 +86,7 @@
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="${sphere_mass}"/>
-            <inertia ixx="${2/5*sphere_mass*0.01^2}" ixy="0.0" ixz="0.0" iyy="${2/5*sphere_mass*0.01^2}" iyz="0.0" izz="${2/5*sphere_mass*0.01^2}"/>
+            <inertia ixx="${2/5*sphere_mass*0.01**2}" ixy="0.0" ixz="0.0" iyy="${2/5*sphere_mass*0.01**2}" iyz="0.0" izz="${2/5*sphere_mass*0.01**2}"/>
         </inertial>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -114,7 +114,7 @@
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <mass value="${sphere_mass}"/>
-            <inertia ixx="${2/5*sphere_mass*0.01^2}" ixy="0.0" ixz="0.0" iyy="${2/5*sphere_mass*0.01^2}" iyz="0.0" izz="${2/5*sphere_mass*0.01^2}"/>
+            <inertia ixx="${2/5*sphere_mass*0.01**2}" ixy="0.0" ixz="0.0" iyy="${2/5*sphere_mass*0.01**2}" iyz="0.0" izz="${2/5*sphere_mass*0.01**2}"/>
         </inertial>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
