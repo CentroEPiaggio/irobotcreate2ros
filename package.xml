@@ -17,6 +17,21 @@
   <build_depend>message_generation</build_depend>
   <build_depend>serial</build_depend>
   <build_depend>tf</build_depend>
+
+  <!-- added -->
+  <build_depend>move_base</build_depend>
+  <build_depend>my_odom_configuration_dep</build_depend>
+  <build_depend>my_sensor_configuration_dep</build_depend>
+  <build_depend>my_tf_configuration_dep</build_depend>
+  <build_export_depend>move_base</build_export_depend>
+  <build_export_depend>my_odom_configuration_dep</build_export_depend>
+  <build_export_depend>my_sensor_configuration_dep</build_export_depend>
+  <build_export_depend>my_tf_configuration_dep</build_export_depend>
+  <exec_depend>move_base</exec_depend>
+  <exec_depend>my_odom_configuration_dep</exec_depend>
+  <exec_depend>my_sensor_configuration_dep</exec_depend>
+  <exec_depend>my_tf_configuration_dep</exec_depend>
+  <!-- end of added section -->
   
   <run_depend>roscpp</run_depend>
   <run_depend>rviz</run_depend>
@@ -25,4 +40,6 @@
   <run_depend>message_runtime</run_depend>
   <run_depend>serial</run_depend>
   <run_depend>tf</run_depend>
+
+  
 </package>

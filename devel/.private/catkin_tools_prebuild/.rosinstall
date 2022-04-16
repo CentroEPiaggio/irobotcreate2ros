@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/.private/catkin_tools_prebuild/setup.sh

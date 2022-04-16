@@ -1,0 +1,1 @@
+/home/fizzer/mech464_ws/src/irobotcreate2ros/devel/.private/catkin_tools_prebuild/local_setup.sh

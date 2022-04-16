@@ -1,0 +1,12 @@
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./setup.zsh
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./setup.sh
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./_setup_util.py
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./local_setup.bash
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./cmake.lock
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./local_setup.sh
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./env.sh
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./setup.bash
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/./local_setup.zsh
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/lib/pkgconfig/catkin_tools_prebuild.pc
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig.cmake
+Symlinking /home/fizzer/mech464_ws/src/irobotcreate2ros/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig-version.cmake

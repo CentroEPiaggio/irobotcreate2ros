@@ -1,0 +1,6 @@
+devel_space: /home/fizzer/mech464_ws/src/irobotcreate2ros/devel
+install: false
+install_space: /home/fizzer/mech464_ws/src/irobotcreate2ros/install
+profile: default
+source_space: /home/fizzer/mech464_ws/src/irobotcreate2ros/src
+workspace: /home/fizzer/mech464_ws/src/irobotcreate2ros

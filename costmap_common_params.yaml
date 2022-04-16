@@ -1,0 +1,11 @@
+obstacle_range: 2.5 #The "obstacle_range" parameter determines the maximum range sensor reading that will result in an obstacle being put into the costmap. Here, we have it set at 2.5 meters, which means that the robot will only update its map with information about obstacles that are within 2.5 meters of the base.
+raytrace_range: 3.0 #The "raytrace_range" parameter determines the range to which we will raytrace freespace given a sensor reading. Setting it to 3.0 meters as we have above means that the robot will attempt to clear out space in front of it up to 3.0 meters away given a sensor reading. 
+#footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
+robot_radius: ir_of_robot #idk how to specify this?
+inflation_radius: 0.55
+
+observation_sources: laser_scan_sensor point_cloud_sensor
+
+laser_scan_sensor: {sensor_frame: frame_name, data_type: LaserScan, topic: topic_name, marking: true, clearing: true}
+
+point_cloud_sensor: {sensor_frame: frame_name, data_type: PointCloud, topic: topic_name, marking: true, clearing: true}
