@@ -23,14 +23,14 @@
   <build_depend>my_odom_configuration_dep</build_depend>
   <build_depend>my_sensor_configuration_dep</build_depend>
   <build_depend>my_tf_configuration_dep</build_depend>
-  <build_export_depend>move_base</build_export_depend>
+<!--   <build_export_depend>move_base</build_export_depend>
   <build_export_depend>my_odom_configuration_dep</build_export_depend>
   <build_export_depend>my_sensor_configuration_dep</build_export_depend>
-  <build_export_depend>my_tf_configuration_dep</build_export_depend>
-  <exec_depend>move_base</exec_depend>
-  <exec_depend>my_odom_configuration_dep</exec_depend>
-  <exec_depend>my_sensor_configuration_dep</exec_depend>
-  <exec_depend>my_tf_configuration_dep</exec_depend>
+  <build_export_depend>my_tf_configuration_dep</build_export_depend> -->
+  <run_depend>move_base</run_depend>
+  <run_depend>my_odom_configuration_dep</run_depend>
+  <run_depend>my_sensor_configuration_dep</run_depend>
+  <run_depend>my_tf_configuration_dep</run_depend>
   <!-- end of added section -->
   
   <run_depend>roscpp</run_depend>
