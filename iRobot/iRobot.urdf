@@ -38,6 +38,8 @@
   <material name="iRobot/Orange">
     <color rgba="1.0 0.65 0.0 1.0"/>
   </material>
+  <link name="dummy">
+   </link>
   <link name="base_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -70,6 +72,10 @@
       </geometry>
     </collision>
   </link>
+   <joint name="dummy_joint" type="fixed">
+     <parent link="dummy"/>
+     <child link="base_link"/>
+   </joint>
   <joint name="left_axis_base_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0.14 -0.02"/>
     <parent link="chassis"/>
@@ -318,7 +324,7 @@
         </noise>
       </ray>
       <plugin filename="libgazebo_ros_laser.so" name="gazebo_ros_head_hokuyo_controller">
-        <robotNamespace/>
+  <!--       <robotNamespace/> -->
         <topicName>laser_scan</topicName>
         <frameName>hokuyo_laser_link</frameName>
       </plugin>

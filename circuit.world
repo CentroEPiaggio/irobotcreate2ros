@@ -2,7 +2,7 @@
   <world name='default'>
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
-      <pose>0 0 10 0 -0 0</pose>
+      <pose>0 0 0 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <attenuation>
@@ -85,7 +85,7 @@
     </gui>
     <!-- A simple circuit -->
     <include>
-      <uri>model://Circuit_ql_1</uri>
+      <uri>model://model/Maze_ql_1</uri>
       <pose>2.4 -2.1 0 0 0 0</pose>
     </include>
   </world>
