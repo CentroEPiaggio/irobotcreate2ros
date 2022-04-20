@@ -34,6 +34,11 @@ Adding the irobotcreate2ros node to your folder:
   - export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:$(rospack find irobotcreate2)
   - source /home/fizzer/mech464_ws/devel/setup.bash
 
+Running gmapping - TEMP:
+- rosrun gmapping slam_gmapping scan:=/iRobot/laser_scan
+- rosrun tf static_ansform_publisher 0 0 0 0 0 0 /base_link /iRobot/hokuyo_laser_link 10
+- switch to Rviz and add Map from "add topic", and set it to be wrt /map
+
 Add your user to dialout group so it connects to USB properly:
 - sudo usermod -a -G dialout fizzer
 - log out and log in again
