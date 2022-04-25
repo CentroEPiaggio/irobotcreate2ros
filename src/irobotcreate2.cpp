@@ -82,9 +82,10 @@ std::string prefixTopic(std::string prefix, char * name)
 
 void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel)
 {
-	if(bumper_warning.load()) roomba->drive(-0.2, 0);
-	else if(ir_warning.load()) roomba->drive(0, cmd_vel->angular.z);
-	else roomba->drive(cmd_vel->linear.x,cmd_vel->angular.z);
+	//if(bumper_warning.load()) roomba->drive(-0.2, 0);
+	//else if(ir_warning.load()) roomba->drive(0, cmd_vel->angular.z);
+	//else 
+	roomba->drive(cmd_vel->linear.x,cmd_vel->angular.z);
 
 	last_cmd_vel = ros::Time::now();
 }
