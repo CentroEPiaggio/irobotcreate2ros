@@ -22,10 +22,10 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   serial
   tf
-  move_base
-  my_odom_configuration_dep
-  my_sensor_configuration_dep
-  my_tf_configuration_dep
+  #move_base
+  #my_odom_configuration_dep
+  #my_sensor_configuration_dep
+  #my_tf_configuration_dep
 )
 # Generate messages in the 'msg' folder
 add_message_files(
