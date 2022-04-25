@@ -62,6 +62,8 @@ def blue_detec(imageFrame):
     # BGR(RGB color space) to 
     # HSV(hue-saturation-value)
     # color space
+    blur_val = 11 # should be positive and odd
+    imageFrame = cv2.GaussianBlur(imageFrame, (blur_val,blur_val), 0)
     hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
   
     # Set range for blue color and
@@ -89,7 +91,7 @@ def blue_detec(imageFrame):
     box_dims = []
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if(area > 500):
+        if(area > 800):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
